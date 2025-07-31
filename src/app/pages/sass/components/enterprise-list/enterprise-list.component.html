@@ -1,0 +1,46 @@
+<div class="flex flex-col space-y-3 md:mx-3 pb-4" xmlns="http://www.w3.org/1999/html">
+  <div
+    appGetElementHeight
+    (height)="height = $event"
+    class="flex flex-col space-y-3 sticky top-16 z-50 bg-app-bg py-3">
+    <div
+      class="flex flex-col py-[1.375rem] sm:py-[1.125rem] md:py-[1rem] md:py-[0.875rem] xl:py-[0.75rem] 2xl:py-[0.625rem] space-y-3 md:space-y-0 md:flex-row justify-between">
+      <div class="flex flex-col space-y-2 justify-between w-full px-3">
+        <h1 class="text-h1_mobile leading-h1_mobile md:text-h1 md:leading-h1 font-semibold">Enterprise List</h1>
+        <p class="text-body text-not-black">Total 10 enterprise</p>
+      </div>
+    </div>
+    <div class="flex space-x-2 items-center ">
+      <div class="relative flex-1">
+        <div
+          class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <img src="assets/svg/search.svg" class="notPreview" alt="search"/>
+        </div>
+        <button
+          (click)="onClickClear()"
+          *ngIf="searchValue"
+          class="absolute inset-y-0 right-0 pr-3 flex items-center">
+          <i class="far fa-times text-gray-500 text-xs"></i>
+        </button>
+        <input
+          (keyup)="onKeyUpSearch($event)"
+          type="text"
+          name="email"
+          class="border-none text-input-hint w-full  bg-white sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block pl-10 p-2.5"
+          placeholder="Search  enterprise, mobile number, email" />
+      </div>
+      <button
+        (click)="onClickAddEnterprise()"
+        class="px-4  flex mx-2 items-center py-2 md:py-2 bg-primary  text-white rounded-lg ">
+        <span class="md:hidden"><i class="fas fa-plus-circle"></i> </span>
+        <span class="hidden md:block">Add New Enterprise</span>
+      </button>
+    </div>
+  </div>
+</div>
+<!--coming soon with image-->
+<!--<div class="h-[90vh] w-full flex justify-center items-center bg-white">-->
+<!--    <span class="text-7xl font-extrabold text-not-black">-->
+<!--      COMING SOON-->
+<!--    </span>-->
+<!--</div>-->
