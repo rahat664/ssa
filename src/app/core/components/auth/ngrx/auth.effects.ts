@@ -72,6 +72,7 @@ export class AuthEffects {
             // Change to your desired route
             this.shared.getUserPermissions().subscribe((permissions: any) => {
               if (permissions.status == 'OK') {
+                this.shared.showSuccess('Login successful');
                 localStorage.setItem(
                   'permissions',
                   JSON.stringify(permissions.data)
@@ -80,6 +81,7 @@ export class AuthEffects {
                 });
 
               } else {
+                this.shared.showError(permissions.message);
               }
             });
           }

@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, timer} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {HotToastService} from '@ngneat/hot-toast';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
-
   permissionsUrl = environment.userUrl + '/api/permissions';
   closeInputSelect: BehaviorSubject<any> = new BehaviorSubject<any>(false);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toast: HotToastService) { }
 
   validateInterNationalPhoneNumber() {
     timer(10).subscribe(() => {
@@ -59,5 +59,72 @@ export class SharedService {
 
   getUserPermissions() {
     return this.http.get(`${this.permissionsUrl}`);
+  }
+
+  showSuccess(message: string, title?: string) {
+    this.toast.success(message, {
+      duration: 3000,
+      position: 'top-right',
+      style: {
+        backgroundColor: '#51A351',
+        color: 'white',
+        padding: '10px',
+      },
+      iconTheme: {
+        primary: '#51A351',
+        secondary: 'white',
+      },
+    });
+  }
+
+  showError(message: string, title?: string) {
+    this.toast.error(message, {
+      duration: 3000,
+      position: 'top-right',
+      style: {
+        backgroundColor: '#BD362F',
+        color: 'white',
+        padding: '10px',
+      },
+      iconTheme: {
+        primary: '#BD362F',
+        secondary: 'white',
+      },
+    });
+  }
+
+  showInfo(message: string, title?: string) {
+    this.toast.info(message, {
+      duration: 3000,
+      position: 'top-right',
+      style: {
+        backgroundColor: '#fff',
+        padding: '10px',
+      },
+    });
+  }
+
+  showWarning(message: string, title?: string) {
+    this.toast.warning(message, {
+      duration: 3000,
+      position: 'top-right',
+      style: {
+        backgroundColor: '#F89406',
+        color: 'white',
+        padding: '10px',
+      },
+    });
+  }
+
+  showCustom(message: string, title?: string) {
+    this.toast.show(message, {
+      duration: 3000,
+      position: 'top-right',
+      style: {
+        backgroundColor: '#F89406',
+        color: 'white',
+        padding: '10px',
+      },
+    });
   }
 }
