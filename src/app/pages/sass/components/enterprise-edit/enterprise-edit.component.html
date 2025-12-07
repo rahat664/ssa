@@ -1,0 +1,102 @@
+<div class="px-16 py-10 relative">
+  <button (click)="onCloseAddEnterprise()" class="absolute top-8 right-8">
+    <i class="fal fa-times text-gray-500 text-xl"></i>
+  </button>
+  <div class="flex items-center justify-center pb-6 border-b-2 border-line">
+    <div class="flex flex-col space-y-4 items-center">
+      <img src="assets/svg/enterprise-add.svg" class="notPreview w-17 h-17" alt="enterprise icon"/>
+      <h1 class="text-h2 leading-h2 md:text-h2 md:leading-h2 font-semibold">Add new enterprise</h1>
+    </div>
+  </div>
+  <form [formGroup]="enterpriseForm" (ngSubmit)="onSubmitEnterprise()" class="py-9 flex flex-col space-y-6">
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="name" class="text-body_title leading-body_title text-web-text-secondary">Name</label>
+      <mat-form-field appearance="outline" class="example-full-width"  [ngClass]="{
+            error: enterpriseForm.get('name').invalid && enterpriseForm.get('name').touched,
+          }">
+        <input
+          appAlphabetOnly
+          id="name"
+          [minLength]="2"
+          [maxLength]="50"
+          type="text"
+          matInput
+          formControlName="name"
+          placeholder="Enterprise Name"/>
+      </mat-form-field>
+      <div *ngIf="enterpriseForm.get('name').touched" class="text-red text-xs">
+        <span>{{ getNameErrorMessage() }}</span>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="enterpriseType" class="text-body_title leading-body_title text-web-text-secondary">Enterprise Type</label>
+      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+            error:
+              enterpriseForm.get('enterpriseType').invalid && enterpriseForm.get('enterpriseType').touched,
+          }">
+        <mat-select
+          id="enterpriseType"
+          formControlName="enterpriseType"
+          placeholder="Select Enterprise Type">
+          <mat-option *ngFor="let type of enterpriseTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="enterpriseForm.get('enterpriseType').touched && enterpriseForm.get('email').invalid " class="text-red text-xs">
+        <span>{{ getEnterpriseTypeErrorMessage() }}</span>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-2 w-full"  >
+      <label for="email" class="text-body_title leading-body_title text-web-text-secondary">Email</label>
+      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+            error:
+              enterpriseForm.get('email').invalid && enterpriseForm.get('email').touched,
+          }">
+        <input
+          id="email"
+          type="email"
+          matInput
+          formControlName="email"
+          placeholder="Enter Email"/>
+      </mat-form-field>
+      <div *ngIf="enterpriseForm.get('email').touched" class="text-red text-xs">
+        <span>{{ getEmailErrorMessage() }}</span>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="phone" class="text-body_title leading-body_title text-web-text-secondary">Phone</label>
+      <ngx-material-intl-tel-input
+        [includeDialCode]="false"
+        #numberInput
+        class="customize"
+        id="phone"
+        [textLabels]="textLabels"
+        [autoSelectedCountry]="CountryISO.Bangladesh"
+        [preferredCountries]="[CountryISO.Bangladesh]"
+        [fieldControl]="phoneNumber"
+        [numberValidation]="true"
+        [hidePhoneIcon]="true"
+        [required]="true"
+        [autoIpLookup]="false"
+        [ngClass]="{ customError: enterpriseForm.get('phone').invalid && enterpriseForm.get('phone').touched }"></ngx-material-intl-tel-input>
+      <div *ngIf="enterpriseForm.get('phone').touched && enterpriseForm.get('phone').invalid" class="text-red text-xs">
+          <span>
+            <span>Phone number is required</span>
+          </span>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-2 w-full col-span-2">
+      <label for="note">Address</label>
+      <textarea
+        placeholder="Enter Address"
+        class="bg-input rounded-lg p-4 border border-disabled"
+        id="note"
+        formControlName="address"></textarea>
+    </div>
+    <button type="submit" class="cursor-pointer bg-primary text-white rounded-lg px-6 py-3 font-semibold text-base leading-base hover:bg-blue-hover focus:outline-none focus:ring-2 focus:ring-blue-focus focus:ring-opacity-50">
+      <i *ngIf="loading" class="fas fa-spinner fa-spin mr-2"></i>
+      Update Enterprise
+    </button>
+  </form>
+</div>

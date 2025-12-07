@@ -1,0 +1,81 @@
+<div class="flex  justify-center p-6">
+
+  <div class="w-full max-w-3xl bg-white  rounded-lg shadow-sm  relative">
+
+    <div class="flex justify-between items-center mb-1 border-b-2 border-disabled px-6 py-3">
+      <div>
+        <h1 class="text-xl font-bold text-gray-900">{{ moduleName }}</h1>
+        <p class="text-sm text-gray-500 mt-1">
+          {{ totalOptions }} Total options •
+          <span class="text-gray-700">{{ activeCount }} activated</span> •
+          <span class="text-gray-400">{{ inactiveCount }} inactive</span>
+        </p>
+      </div>
+      <button (click)="onClickAddFeature()"
+              class="bg-[#14403C] hover:bg-[#0f302d] text-white text-sm font-medium px-4 py-2 rounded-md transition-colors">
+        Add new feature
+      </button>
+    </div>
+
+    <div class="mt-6 mb-4 flex items-center">
+      <button
+        class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 bg-gray-50 px-3 py-1.5 rounded border border-transparent hover:border-gray-200 transition-all">
+        All active/inactive
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+             class="w-4 h-4 ml-2 text-[#14403C]">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+        </svg>
+      </button>
+      <span class="text-sm text-gray-500 ml-3">All {{ featureList.length }} options for “{{ moduleName }}”</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-4 px-4 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider">
+      <div class="col-span-8">Field/title</div>
+      <div class="col-span-4 text-center mr-12">Active/inactive</div>
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <ng-container *ngIf="featureList && featureList.length > 0; else noFields">
+        <div *ngFor="let field of featureList; let i = index; let isOdd = odd"
+             class="grid grid-cols-12 gap-4 items-center px-4 py-3 rounded-md transition-colors hover:bg-gray-100 group"
+             [ngClass]="{'bg-gray-50': isOdd, 'bg-white': !isOdd}">
+
+          <div class="col-span-8 text-sm font-medium text-gray-700">
+            {{ field.name }}
+          </div>
+
+          <div class="col-span-2 flex justify-center items-center w-full">
+            <button (click)="toggleField(field)"
+                    class="w-5 h-5 rounded flex items-center justify-center border transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary"
+                    [ngClass]="{
+                    'bg-primary border-[#14403C]': field.status === 'active',
+                    'bg-white border-secondary': field.status === 'inactive'
+                  }">
+              <svg *ngIf="field.status === 'active'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                   class="w-3.5 h-3.5 text-white">
+                <path fill-rule="evenodd"
+                      d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="col-span-2 flex justify-end">
+            <button class="text-gray-400 hover:text-[#14403C] transition-colors p-1 rounded-full hover:bg-gray-200">
+              <img src="assets/svg/edit.svg" alt="Edit" >
+            </button>
+          </div>
+
+        </div>
+      </ng-container>
+      <ng-template #noFields>
+        <div class="flex flex-col items-center justify-center py-10 space-y-4">
+          <img src="assets/svg/no-data.svg" alt="No Inactive Modules" class="w-32 h-32">
+          <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">No features
+            available.</h3>
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>

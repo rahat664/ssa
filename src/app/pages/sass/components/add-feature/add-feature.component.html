@@ -1,0 +1,49 @@
+<div class="px-16 py-10 relative">
+  <div>
+    <h1 class="text-h2 leading-h2 md:text-h2 md:leading-h2 font-semibold">Add new feature</h1>
+    <button (click)="onCloseAddModule()" class="absolute top-8 right-8">
+      <i class="fal fa-times text-gray-500 text-xl"></i>
+    </button>
+  </div>
+  <form [formGroup]="featureForm" (ngSubmit)="onSubmitModule()" class="py-9 flex flex-col space-y-6">
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="name" class="text-body_title leading-body_title text-web-text-secondary">Name</label>
+      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+            error: featureForm.get('name').invalid && featureForm.get('name').touched,
+          }">
+        <input
+          id="name"
+          [minLength]="2"
+          [maxLength]="50"
+          type="text"
+          matInput
+          formControlName="name"
+          placeholder="Feature Name"/>
+      </mat-form-field>
+      <div *ngIf="featureForm.get('name').touched && featureForm.get('name').invalid" class="text-red text-xs">
+        <span>Feature name is required</span>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="urls" class="text-body_title leading-body_title text-web-text-secondary">Urls</label>
+      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+            error: featureForm.get('name').invalid && featureForm.get('name').touched,
+          }">
+        <input
+          id="urls"
+          type="text"
+          matInput
+          formControlName="urls"
+          placeholder="Urls"/>
+      </mat-form-field>
+      <div *ngIf="featureForm.get('urls').touched && featureForm.get('urls').invalid" class="text-red text-xs">
+        <span>Feature urls is required</span>
+      </div>
+    </div>
+    <button type="submit"
+            class="bg-primary text-white rounded-lg px-6 py-3 font-semibold text-base leading-base hover:bg-blue-hover focus:outline-none focus:ring-2 focus:ring-blue-focus focus:ring-opacity-50">
+      <i *ngIf="loading" class="fas fa-spinner fa-spin mr-2"></i>
+      Add Feature
+    </button>
+  </form>
+</div>
