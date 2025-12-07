@@ -1,6 +1,6 @@
 <div class="grid md:grid-cols-3 gap-3">
   <div *ngFor="let enterprise of enterpriseListByAlphabet">
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col space-y-2" (click)="onClickEnterprise(enterprise)">
       <h1 class="text-body_title leading-body_title text-not-black font-semibold">
         {{ enterprise.name }}
       </h1>
@@ -16,4 +16,3 @@
     </div>
   </div>
 </div>
-<app-card></app-card>

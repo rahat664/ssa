@@ -3,4 +3,5 @@ export class EnterpriseCreate {
   phone: string = '';
   email: string = '';
   address: string = '';
+  enterpriseType: string;
 }

@@ -3,7 +3,7 @@ import {MatFormField} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AlphabetOnlyDirective} from '../../../../shared/directives/alphabet-only.directive';
-import {NgClass, NgIf} from '@angular/common';
+import {CommonModule, NgClass, NgIf} from '@angular/common';
 import {
   CountryISO,
   NgxMaterialIntlTelInputComponent,
@@ -13,6 +13,8 @@ import {Enterprise} from '../../models/enterprise.model';
 import {EnterpriseCreate} from '../../models/enterprise-create.model';
 import {EnterpriseService} from '../../services/enterprise.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import {MatSelect} from '@angular/material/select';
+import {MatOption} from '@angular/material/core';
 
 @Component({
   selector: 'app-enterprise-add',
@@ -24,6 +26,9 @@ import { MatDialogRef } from '@angular/material/dialog';
     NgIf,
     NgxMaterialIntlTelInputComponent,
     NgClass,
+    MatSelect,
+    MatOption,
+    CommonModule
   ],
   templateUrl: './enterprise-add.component.html',
   styleUrl: './enterprise-add.component.scss'
@@ -38,9 +43,12 @@ export class EnterpriseAddComponent {
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       phone: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
+      enterpriseType: ['Hybrid', [Validators.required]],
       address: ['']
     });
   }
+
+  enterpriseTypes: string[] = ['Hybrid', 'Customer', 'Transporter'];
 
   onSubmitEnterprise() {
     this.loading = true;
@@ -50,6 +58,7 @@ export class EnterpriseAddComponent {
       this.enterpriseCreateModel.phone = this.enterpriseCreateModel.phone.replace(/[\s-]/g, '');
       this.enterpriseCreateModel.email = this.enterpriseForm.get('email')?.value;
       this.enterpriseCreateModel.address = this.enterpriseForm.get('address')?.value;
+      this.enterpriseCreateModel.enterpriseType = this.enterpriseForm.get('enterpriseType')?.value;
 
       this.enterprise.createEnterprise(this.enterpriseCreateModel).subscribe({
         next: (result: Enterprise) => {
@@ -117,5 +126,13 @@ export class EnterpriseAddComponent {
 
   onCloseAddEnterprise() {
     this.dialogRef.close();
+  }
+
+  getEnterpriseTypeErrorMessage() {
+    if (this.enterpriseForm.get('enterpriseType').hasError('required')) {
+      return 'Enterprise type required';
+    } else {
+      return '';
+    }
   }
 }

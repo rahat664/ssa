@@ -28,6 +28,25 @@
         <span>{{ getNameErrorMessage() }}</span>
       </div>
     </div>
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="enterpriseType" class="text-body_title leading-body_title text-web-text-secondary">Enterprise Type</label>
+      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+            error:
+              enterpriseForm.get('enterpriseType').invalid && enterpriseForm.get('enterpriseType').touched,
+          }">
+        <mat-select
+          id="enterpriseType"
+          formControlName="enterpriseType"
+          placeholder="Select Enterprise Type">
+          <mat-option *ngFor="let type of enterpriseTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="enterpriseForm.get('enterpriseType').touched && enterpriseForm.get('email').invalid " class="text-red text-xs">
+        <span>{{ getEnterpriseTypeErrorMessage() }}</span>
+      </div>
+    </div>
     <div class="flex flex-col space-y-2 w-full"  >
       <label for="email" class="text-body_title leading-body_title text-web-text-secondary">Email</label>
       <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{

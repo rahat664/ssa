@@ -1,4 +1,4 @@
 <div class="p-4 flex flex-col space-y-4" *ngFor="let key of Object.keys(filteredEnterpriseList)">
   <div class="text-h1 leading-h1 text-not-black font-bold py-2 border-b-2 border-line">{{ key }}</div>
-    <app-enterprise-card [enterpriseListByAlphabet]="filteredEnterpriseList[key]"></app-enterprise-card>
+    <app-enterprise-card class="cursor-pointer" [enterpriseListByAlphabet]="filteredEnterpriseList[key]"></app-enterprise-card>
 </div>

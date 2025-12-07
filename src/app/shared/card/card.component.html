@@ -5,12 +5,12 @@
     <div class="flex items-center space-x-4">
       <img src="assets/svg/card-icon.svg" alt="Card Icon">
       <div>
-        <h3 class="text-menu-title-mobile leading-h2 font-semibold text-not-black">Create trip</h3>
+        <h3 class="text-menu-title-mobile leading-h2 font-semibold text-not-black">{{ moduleSummary?.name }}</h3>
         <p class="text-body-medium font-normal text-secondary-text">Customized</p>
       </div>
     </div>
 
-    <button (click)="isToggled = !isToggled"
+    <button (click)="onClickToggle()"
             [ngClass]="isToggled ? 'bg-primary' : 'bg-disabled'"
             class="relative cursor-pointer inline-flex items-center h-8 w-14 rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
       <span class="sr-only">Toggle Trip</span>
@@ -20,21 +20,26 @@
     </button>
   </div>
 
-  <div class="px-3 pb-6 flex flex-col space-y-1">
-    <h4 class=" font-regular text-body-large-mobile leading-body-large-mobile">9 Available options for managing trip</h4>
-    <p class="text-sm text-gray-500 mt-1">Last updated : 26 Jun 2025; 3:45 PM</p>
+  <div class="px-3 pb-6 pt-4 flex flex-col space-y-1">
+    <h4 class=" font-regular text-body-large-mobile leading-body-large-mobile">{{ moduleSummary?.totalFeature }}
+      Available options for managing trip</h4>
+    <p class="text-sm text-gray-500 mt-1">Last updated
+      : {{ moduleSummary?.updatedAt ? (moduleSummary?.updatedAt | date : 'd MMM yyyy; h:m z') : (moduleSummary?.createdAt | date : 'd MMM yyyy; h:m a') }}</p>
   </div>
 
   <div class="flex items-center justify-between px-3 pb-4">
 
     <div class="flex items-center space-x-2">
-      <span class="inline-block px-3 py-1 text-sm font-medium text-gray-700 border border-disabled rounded-full">8 activated</span>
       <span
-        class="inline-block px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full">1 inactivated</span>
+        class="inline-block px-3 py-1 text-sm font-medium text-secondary-text border border-disabled rounded-full">{{ moduleSummary?.activeFeature }}
+        activated</span>
+      <span
+        class="inline-block px-3 py-1 text-sm font-medium text-secondary-text border border-line rounded-full">{{ moduleSummary?.inactiveFeature }}
+        inactivated</span>
     </div>
 
-    <button class="flex items-center space-x-1 text-blue-600 hover:text-blue-800 focus:outline-none">
-      <span class="text-sm font-semibold">Customize</span>
+    <button (click)="onclickCustomize()" class="flex items-center cursor-pointer space-x-1 text-link hover:text-blue-800 focus:outline-none">
+      <span class="text-sm font-normal">Customize</span>
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
       </svg>

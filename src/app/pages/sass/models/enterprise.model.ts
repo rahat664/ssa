@@ -1,4 +1,5 @@
 export interface Enterprise {
+  enterpriseType: string;
   id: number;
   name: string;
   enterpriseCode: string;

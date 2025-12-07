@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {authGuard} from './core/components/auth/guards/auth.guard';
 import {isAlreadyLoggedInGuard} from './core/components/auth/guards/is-already-logged-in.guard';
 
@@ -19,7 +19,39 @@ export const routes: Routes = [
       import('./pages/sass/sass.component').then(c => c.SassComponent),
     canActivate: [authGuard],
   },
-
+  {
+    path: 'sass/enterprise-detail',
+    title: 'Enterprise Detail',
+    loadComponent: () =>
+      import('./pages/sass/components/enterprise-detail/enterprise-detail.component').then(
+        c => c.EnterpriseDetailComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'type-wise-permission',
+    title: 'Type Wise Permission',
+    loadComponent: () => import('./pages/sass/components/type-wise-permission/type-wise-permission.component').then(c => c.TypeWisePermissionComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'type-wise-permission/features/:moduleId',
+    title: 'Features',
+    loadComponent: () => import('./pages/sass/components/features/features.component').then(c => c.FeaturesComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'enterprise-detail/features/:moduleId',
+    title: 'Features',
+    loadComponent: () => import('./pages/sass/components/features/features.component').then(c => c.FeaturesComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'role-wise-permission',
+    title: 'Role Wise Permission',
+    loadComponent: () => import('./pages/sass/components/role-wise-permission/role-wise-permission.component').then(c => c.RoleWisePermissionComponent),
+    canActivate: [authGuard]
+  },
   {
     path: '',
     redirectTo: 'sass',
@@ -32,5 +64,5 @@ export const routes: Routes = [
       import('./pages/not-found/not-found.component').then(
         c => c.NotFoundComponent
       ),
-  },
+  }
 ];

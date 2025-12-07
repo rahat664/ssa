@@ -86,7 +86,7 @@ export class GiveMaxHeightDirective {
   }
 
   private setMaxHeight(): void {
-    const maxHeight = `calc(100vh - ${this.anotherItemsHeight} - ${this.topBarHeight} - ${this.isMobileDevice() ? '40px' : '0px'}) `;
+    const maxHeight = `calc(100vh - ${this.anotherItemsHeight} - ${this.topBarHeight} - ${this.isMobileDevice() ? '40px' : 'px'}) `;
     this.el.nativeElement.style.maxHeight = maxHeight;
     this.elementHeight.emit(maxHeight);
     // if div contains table, then set border

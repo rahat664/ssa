@@ -1,5 +1,6 @@
 .active {
-  @apply bg-active text-primary font-semibold;
+  background-color: var(--color-line);
+  color: var(--color-primary);
 }
 
 .slide-right {

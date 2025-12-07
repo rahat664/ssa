@@ -40,6 +40,7 @@ body {
   --color-mobile-line: #d1d9da;
   --color-app-bg: #f7f7f7;
   --color-line: #e5eaeb;
+  --color-active: #E7EDED;
 
   //text typography for mobile
   --text-h3-mobile: 1.5rem;
@@ -383,6 +384,7 @@ img:hover {
   border-radius: 0.25rem !important;
   background-color: #f5fbfc !important;
   height: 2rem !important;
+  
 }
 
 .filter .mat-mdc-form-field-infix {
@@ -408,6 +410,10 @@ body.custom-overlay-bounding-box {
 
     }
   }
+}
+
+button {
+  cursor: pointer !important;
 }
 
 
