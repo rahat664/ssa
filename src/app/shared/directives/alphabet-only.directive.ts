@@ -1,7 +1,8 @@
 import {Directive, HostListener} from '@angular/core';
 
 @Directive({
-  selector: '[appAlphabetOnly]'
+  selector: '[appAlphabetOnly]',
+  standalone: true
 })
 export class AlphabetOnlyDirective {
   constructor() {}

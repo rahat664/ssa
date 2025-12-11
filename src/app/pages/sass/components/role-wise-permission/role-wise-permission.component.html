@@ -1,61 +1,77 @@
 <div class="flex flex-col space-y-2 md:mx-3 pb-4" xmlns="http://www.w3.org/1999/html">
-  <div
-    appGetElementHeight
-    (height)="height = $event"
-    class="flex flex-col space-y-3 sticky top-16 z-50 bg-app-bg py-3">
     <div
-      class="flex flex-col py-[1.375rem] sm:py-[1.125rem] md:py-[1rem] md:py-[0.875rem] xl:py-[0.75rem] 2xl:py-[0.625rem] space-y-3 md:space-y-0 md:flex-row justify-between">
-      <div class="flex flex-col space-y-2 justify-between w-full px-3">
-        <h1 class="text-h1_mobile leading-h1_mobile md:text-h1 md:leading-h1 font-semibold">Role Wise
-          Permission</h1>
-      </div>
-    </div>
-    <div class="p-4 bg-white rounded-lg  flex justify-between items-center">
-      <div class="flex flex-col space-y-2 ">
-        <label for="enterpriseId" class="text-body_title leading-body_title text-web-text-secondary">Enterprise</label>
-        <mat-form-field appearance="outline" class="example-full-width">
-          <mat-select
-            (selectionChange)="onChangeEnterprise($event)"
-            id="enterpriseId"
-            [(ngModel)]="enterpriseId"
-            placeholder="Select Enterprise">
-            <mat-option *ngFor="let ent of enterprise" [value]="ent.id">
-              {{ ent.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <button class="px-4 py-2 bg-primary text-white rounded-lg" (click)="onAddRoles()">Add Roles</button>
-    </div>
-  </div>
-  <div appGiveMaxHeight
-       [totalPage]="1"
-       [anotherItemsHeight]="height" class="">
-    <div class="flex flex-col space-y-3">
-      <div class="flex flex-col space-y-2">
-        <h2 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold">Active Modules</h2>
-        <div class="grid grid-cols-3 gap-3" *ngIf="activeModules?.length > 0; else noActiveModules">
-          <app-card (toggle)="onClickToggle($event)" [moduleSummary]="module" *ngFor="let module of activeModules"></app-card>
+            appGetElementHeight
+            (height)="height = $event"
+            class="flex flex-col space-y-3 sticky top-16 z-50 bg-app-bg py-3">
+        <div
+                class="flex flex-col py-[1.375rem] sm:py-[1.125rem] md:py-[1rem] md:py-[0.875rem] xl:py-[0.75rem] 2xl:py-[0.625rem] space-y-3 md:space-y-0 md:flex-row justify-between">
+            <div class="flex flex-col space-y-2 justify-between w-full px-3">
+                <h1 class="text-h1_mobile leading-h1_mobile md:text-h1 md:leading-h1 font-semibold">Role Wise
+                    Permission</h1>
+            </div>
         </div>
-        <ng-template #noActiveModules>
-          <div class="flex flex-col items-center justify-center py-10 space-y-4">
-            <img src="assets/svg/no-data.svg" alt="No Active Modules" class="w-32 h-32">
-            <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">No Active Modules</h3>
-          </div>
-        </ng-template>
-      </div>
-      <div class="flex flex-col space-y-2">
-        <h2 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold">Inactive Modules</h2>
-        <div class="grid grid-cols-3 gap-3" *ngIf="inactiveModules?.length > 0; else noInactiveModules">
-          <app-card (toggle)="onClickToggle($event)" (customize)="onCustomize($event)" [moduleSummary]="module" *ngFor="let module of inactiveModules"></app-card>
+        <div class="p-4 bg-white rounded-lg  flex justify-between items-center">
+            <div class="flex flex-col space-y-2 ">
+                <label for="enterpriseId" class="text-body_title leading-body_title text-web-text-secondary">Enterprise</label>
+                <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-select
+                            (selectionChange)="onChangeEnterprise($event)"
+                            id="enterpriseId"
+                            [(ngModel)]="enterpriseId"
+                            placeholder="Select Enterprise">
+                        <mat-option *ngFor="let ent of enterprise" [value]="ent.id">
+                            {{ ent.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <button class="px-4 py-2 bg-primary text-white rounded-lg" (click)="onAddRoles()">Add Roles</button>
         </div>
-        <ng-template #noInactiveModules>
-          <div class="flex flex-col items-center justify-center py-10 space-y-4">
-            <img src="assets/svg/no-data.svg" alt="No Inactive Modules" class="w-32 h-32">
-            <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">No Inactive Modules</h3>
-          </div>
-        </ng-template>
-      </div>
     </div>
-  </div>
+    <div appGiveMaxHeight
+         [totalPage]="1"
+         [anotherItemsHeight]="height" class="">
+        <div class="flex flex-col space-y-3">
+            <div *ngIf="isLoading" class="text-center py-6 text-secondary">Loading roles...</div>
+            <div *ngIf="errorMessage && !isLoading" class="text-center py-6 text-red">{{ errorMessage }}</div>
+            <div class="flex flex-col space-y-2">
+                <h2 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold">Active Modules</h2>
+                <div class="grid grid-cols-3 gap-3" *ngIf="activeModules?.length > 0; else noActiveModules">
+                    <ng-container *ngFor="let role of activeModules">
+                        <app-card
+                          (customize)="onCustomize(role)"
+                          (toggle)="onClickToggle({module: $event.module, isActive: $event.isActive, roleId: role.roleId, roleName: role.roleName})"
+                          [moduleSummary]="role"
+                          [roleName]="role.roleName"
+                          ></app-card>
+                    </ng-container>
+                </div>
+                <ng-template #noActiveModules>
+                    <div class="flex flex-col items-center justify-center py-10 space-y-4">
+                        <img src="assets/svg/no-data.svg" alt="No Active Modules" class="w-32 h-32">
+                        <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">No Active Modules</h3>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="flex flex-col space-y-2">
+                <h2 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold">Inactive Modules</h2>
+                <div class="grid grid-cols-3 gap-3" *ngIf="inactiveModules?.length > 0; else noInactiveModules">
+                    <ng-container *ngFor="let role of inactiveModules">
+                        <app-card
+                          (customize)="onCustomize(role)"
+                          (toggle)="onClickToggle({module: $event.module, isActive: $event.isActive, roleId: role.roleId, roleName: role.roleName})"
+                          [moduleSummary]="role"
+                          [roleName]="role.name"
+                          ></app-card>
+                    </ng-container>
+                </div>
+                <ng-template #noInactiveModules>
+                    <div class="flex flex-col items-center justify-center py-10 space-y-4">
+                        <img src="assets/svg/no-data.svg" alt="No Inactive Modules" class="w-32 h-32">
+                        <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">No Inactive Modules</h3>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
 </div>

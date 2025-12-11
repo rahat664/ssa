@@ -8,6 +8,7 @@
         <h3 class="text-menu-title-mobile leading-h2 font-semibold text-not-black">{{ moduleSummary?.name }}</h3>
         <p class="text-body-medium font-normal text-secondary-text">Customized</p>
       </div>
+      <span *ngIf="roleName" class="inline-block px-2 py-1 text-xs font-semibold text-primary border border-primary rounded-full">{{ roleName }}</span>
     </div>
 
     <button (click)="onClickToggle()"

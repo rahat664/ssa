@@ -17,6 +17,7 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-type-wise-permission',
+  standalone: true,
   imports: [
     CommonModule,
     CardComponent,
@@ -92,7 +93,7 @@ export class TypeWisePermissionComponent {
 
   onCustomize($event: ModuleSummary) {
     const moduleSummary = $event;
-    this.router.navigate([`/type-wise-permission/features/${$event.id}`, { enterpriseType: this.enterpriseName}], { state: { $event: moduleSummary }});
+    this.router.navigate([`/type-wise-permission/features/${$event.id}/${this.enterpriseName}`], { state: { moduleSummary }});
   }
 
   onClickToggle($event: any) {
@@ -101,12 +102,14 @@ export class TypeWisePermissionComponent {
       const featureIds = $event.module.features.map(feature => feature.id);
       body = {
         enterpriseType: this.enterpriseName,
-        featureIds: featureIds
+        allowFeatureIds: featureIds,
+        denyFeatureIds: []
       }
     } else {
       body = {
         enterpriseType: this.enterpriseName,
-        featureIds: []
+        allowFeatureIds: [],
+        denyFeatureIds: $event.module.features.map(feature => feature.id)
       }
     }
     this.service.typeFeatureAdd(body).subscribe((res: any) => {

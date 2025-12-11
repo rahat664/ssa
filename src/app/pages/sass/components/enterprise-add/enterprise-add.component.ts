@@ -18,6 +18,7 @@ import {MatOption} from '@angular/material/core';
 
 @Component({
   selector: 'app-enterprise-add',
+  standalone: true,
   imports: [
     MatFormField,
     MatInput,
@@ -43,7 +44,7 @@ export class EnterpriseAddComponent {
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       phone: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      //enterpriseType: ['Hybrid', [Validators.required]],
+      enterpriseType: ['Hybrid', [Validators.required]],
       address: ['']
     });
   }
@@ -58,7 +59,7 @@ export class EnterpriseAddComponent {
       this.enterpriseCreateModel.phone = this.enterpriseCreateModel.phone.replace(/[\s-]/g, '');
       this.enterpriseCreateModel.email = this.enterpriseForm.get('email')?.value;
       this.enterpriseCreateModel.address = this.enterpriseForm.get('address')?.value;
-      //this.enterpriseCreateModel.enterpriseType = this.enterpriseForm.get('enterpriseType')?.value;
+      this.enterpriseCreateModel.enterpriseType = this.enterpriseForm.get('enterpriseType')?.value;
 
       this.enterprise.createEnterprise(this.enterpriseCreateModel).subscribe({
         next: (result: Enterprise) => {

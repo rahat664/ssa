@@ -1,7 +1,8 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, HostListener, Output} from '@angular/core';
 
 @Directive({
-  selector: '[appGetElementHeight]'
+  selector: '[appGetElementHeight]',
+  standalone: true
 })
 export class GetElementHeightDirective {
 

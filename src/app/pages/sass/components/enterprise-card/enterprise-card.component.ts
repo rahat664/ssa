@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-enterprise-card',
+  standalone: true,
   imports: [
     NgForOf,
   ],

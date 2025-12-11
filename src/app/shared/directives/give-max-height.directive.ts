@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[appGiveMaxHeight]'
+  selector: '[appGiveMaxHeight]',
+  standalone: true
 })
 export class GiveMaxHeightDirective {
   @Input() anotherItemsHeight = '0px';

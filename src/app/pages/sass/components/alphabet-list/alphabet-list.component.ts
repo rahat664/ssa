@@ -5,6 +5,7 @@ import {NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-alphabet-list',
+  standalone: true,
   imports: [
     EnterpriseCardComponent,
     NgForOf

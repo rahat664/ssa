@@ -7,9 +7,11 @@ import {MatFormField} from '@angular/material/form-field';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {EnterpriseService} from '../../services/enterprise.service';
 import {SharedService} from '../../../../shared/service/shared.service';
+import {Feature} from '../../models/modules.model';
 
 @Component({
   selector: 'app-add-feature',
+  standalone: true,
   imports: [
     MatFormField,
     MatInput,
@@ -32,19 +34,19 @@ export class AddFeatureComponent {
   }
 
   onSubmitModule() {
-    this.featureForm.get('moduleId').setValue(Number(this.data?.moduleId));
-    this.featureForm.get('urls').setValue([
-      this.featureForm.get('urls').value,
-    ])
+    const moduleId = Number(this.data?.moduleId);
+    this.featureForm.get('moduleId').setValue(moduleId);
+    this.featureForm.get('urls').setValue([this.featureForm.get('urls').value]);
     this.service.addFeature(this.featureForm.value).subscribe((res: any) => {
-      if (res) {
-        this.shared.showSuccess(res.message);
-        this.dialogRef.close(true);
+      const newFeature: Feature | undefined = res?.data || res;
+      if (res?.status === 'OK' || res?.status === 200 || newFeature) {
+        this.shared.showSuccess(res?.message || 'Feature added');
+        this.dialogRef.close(newFeature || true);
       } else {
-        this.shared.showError('Failed to add feature');
+        this.shared.showError(res?.message || 'Failed to add feature');
       }
     }, error => {
-      this.shared.showError(error.error.message);
+      this.shared.showError(error.error?.message || 'Failed to add feature');
     });
   }
 

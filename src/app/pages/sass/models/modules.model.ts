@@ -5,6 +5,8 @@ export interface Feature {
 }
 
 export interface ModuleSummary {
+  roleId?: number;
+  roleName?: string;
   id: number;
   name: string;
   totalFeature: number;

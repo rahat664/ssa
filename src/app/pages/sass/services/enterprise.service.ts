@@ -22,6 +22,9 @@ export class EnterpriseService {
   createEnterprise(enterpriseCreateModel: EnterpriseCreate) {
     return this.http.post(this.enterpriseUrl, enterpriseCreateModel);
   }
+  updateEnterprise(enterpriseId: number, enterpriseCreateModel: EnterpriseCreate) {
+    return this.http.put(`${this.enterpriseUrl}/${enterpriseId}`, enterpriseCreateModel);
+  }
 
   getModulesByEnterpriseId(enterpriseId: number) {
     return this.http.get(`${this.modulesUrl}/${enterpriseId}/features-summary`);
@@ -47,15 +50,51 @@ export class EnterpriseService {
     return this.http.post(`${this.enterpriseTypeFeaturesUrl}`, body);
   }
 
-  getRole() {
-    return this.http.get(`${environment.userUrl}/api/roles`);
-  }
 
   getRolesByEnterpriseId(enterpriseId: number) {
     return this.http.get(`${environment.userUrl}/new-role/summary/${enterpriseId}`);
   }
 
-  getUsers(page: number = 0, size: number = 30) {
-    return this.http.get(`${environment.userUrl}/api/users?page=${page}&size=${size}`);
+
+
+  getUsersByEnterpriseId(enterpriseId: number, page: number = 0, searchTerm: string = '') {
+    let url = `${environment.userUrl}/api/users/all?enterpriseId=${enterpriseId}&page=${page}`;
+    if (searchTerm) {
+      url += `&searchParam=${encodeURIComponent(searchTerm)}`;
+    }
+    return this.http.get(url);
   }
+
+  getUserSummaryById(userId: number | string, roleId?: number) {
+    if (roleId !== undefined) {
+      return this.http.get(`${environment.userUrl}/new-user-role/summary/${userId}/${roleId}`);
+    }
+    return this.http.get(`${environment.userUrl}/new-user-role/summary/${userId}`);
+  }
+
+  getRoleByUserId(userId: number | string) {
+    return this.http.get(`${environment.userUrl}/new-user-role/summary/${userId}`);
+  }
+
+  addEnterpriseIdFeature(body) {
+    return this.http.post(`${environment.userUrl}/api/enterprise-features/save`, body);
+  }
+
+  roleFeatureUpdate(body) {
+    return this.http.put(`${environment.userUrl}/new-role`, body);
+  }
+
+  assignRoleToUser(body: any) {
+    return this.http.put(`${environment.userUrl}/new-user-role`, body);
+  }
+
+  updateUserPermission(body) {
+    return this.http.put(`${environment.userUrl}/new-user-role`, body);
+  }
+
+  getUserById(userId: number | string) {
+    return this.http.get(`${environment.userUrl}/api/users/user-id/sl-${userId}`);
+  }
+
+
 }

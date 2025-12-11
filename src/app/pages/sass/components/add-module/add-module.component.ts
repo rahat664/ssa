@@ -9,6 +9,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-module',
+  standalone: true,
   imports: [
     AlphabetOnlyDirective,
     MatFormField,
