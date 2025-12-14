@@ -109,29 +109,20 @@ export class UserSummaryComponent {
           this.isLoading = false;
           return;
         }
-        const requests = roleIds.map((roleId: number) => this.service.getUserSummaryById(resolvedUserId, roleId));
-        forkJoin(requests).subscribe({
-          next: (responses: any[]) => {
-            const modules: ModuleSummary[] = responses
-              .map((r, index) => {
-                const role = Array.isArray(roles) ? roles[index] : null;
-                const roleName = role?.name || role?.authority || '';
-                const roleId = role?.id;
-                return (r?.data || r || [])
-                  .map((m: any) => ({...m, roleName, roleId}));
-              })
-              .flat()
-              .filter((m: any) => !!m);
-            this.activeModules = modules.filter((m: ModuleSummary & { roleId?: number }) => m?.active !== false);
-            this.inactiveModules = modules.filter((m: ModuleSummary & { roleId?: number }) => m?.active === false);
+        this.service.getUserSummaryByEnterpriseId(this.enterpriseId, resolvedUserId).subscribe(
+          (res2: any) => {
+            const modules = res2?.data || res2 || [];
+            const activeModules = modules.filter((m: ModuleSummary) => m?.active !== false);
+            const inactiveModules = modules.filter((m: ModuleSummary) => m?.active === false);
+            this.activeModules = activeModules;
+            this.inactiveModules = inactiveModules;
+            this.isLoading = false
           },
-          error: () => {
-            this.errorMessage = 'Failed to load user permissions.';
-          },
-          complete: () => {
+          () => {
+            // Ignore error here, will fetch per role below
             this.isLoading = false;
           }
-        });
+        )
       },
       error: () => {
         this.errorMessage = 'Failed to load user roles.';
@@ -232,7 +223,7 @@ export class UserSummaryComponent {
       this.shared.showError('Missing enterprise type for customization.');
       return;
     }
-    this.router.navigate([`/enterprise-detail/features/${module.id}/${enterpriseType}`], {
+    this.router.navigate([`/user-wise-permission/features/${module.id}/${enterpriseType}`], {
       state: {
         moduleSummary: module,
         enterpriseId: this.enterpriseId,

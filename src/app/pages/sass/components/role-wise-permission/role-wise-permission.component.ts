@@ -88,25 +88,26 @@ export class RoleWisePermissionComponent {
         });
     }
 
-    onCustomize(role: any) {
-        if (!role?.id) {
+    onCustomize(roleModule: any) {
+        const moduleIdForNav = roleModule?.id ?? roleModule?.moduleId;
+        if (!moduleIdForNav || !roleModule?.roleId) {
             this.shared.showError('Missing role or module information.');
             return;
         }
-        const enterpriseType = this.selectedEnterpriseType || role?.enterpriseType || '';
+        const enterpriseType = this.selectedEnterpriseType || roleModule?.enterpriseType || '';
         if (!enterpriseType) {
             this.shared.showError('Missing enterprise type for customization.');
             return;
         }
-        this.router.navigate([`/enterprise-detail/features/${role.roleId}/${enterpriseType}`], {
+        this.router.navigate([`/role-wise-permission/features/${moduleIdForNav}/${enterpriseType}`], {
             state: {
-                moduleSummary: role,
+                moduleSummary: roleModule,
                 enterpriseId: this.enterpriseId,
                 enterpriseType,
-                roleId: role.roleId,
-                roleName: role.name
+                roleId: roleModule.roleId,
+                roleName: roleModule.roleName || roleModule.name
             },
-            queryParams: {enterpriseId: this.enterpriseId, roleId: role.id}
+            queryParams: {enterpriseId: this.enterpriseId, roleId: roleModule.roleId}
         });
     }
 
@@ -151,7 +152,6 @@ export class RoleWisePermissionComponent {
                 this.inactiveModules = allModules.filter((mod: ModuleSummary) => {
                     return mod.activeFeature === 0;
                 });
-                console.log(this.activeModules, this.inactiveModules);
             },
             error: () => {
                 this.errorMessage = 'Failed to load roles.';

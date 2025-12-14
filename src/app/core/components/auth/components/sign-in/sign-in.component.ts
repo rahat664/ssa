@@ -147,7 +147,6 @@ export class SignInComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       if (this.usingEmail) {
         this.loginRequestPayload = {...this.loginRequestPayload, email:this.email.value, password: this.password.value};
-        console.log(this.loginRequestPayload)
         this.store.dispatch(login({ payload: this.loginRequestPayload }));
       } else {
         this.$loading = true;

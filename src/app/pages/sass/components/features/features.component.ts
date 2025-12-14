@@ -29,9 +29,14 @@ export class FeaturesComponent {
   private enterpriseId: number | null = null;
   private roleId: number | null = null;
   private userId: number | null = null;
+  private roleName: string | null = null;
+  private userName: string | null = null;
   private isEnterpriseContext = false;
   private isRoleContext = false;
   private isUserContext = false;
+  canAddFeature = false;
+  pageTitle = '';
+  pageSubtitle = '';
   private initialModuleState: ModuleSummary | null = null;
   moduleDetails: ModuleSummary = {} as ModuleSummary;
   featureList: Feature[] = [];
@@ -55,9 +60,13 @@ export class FeaturesComponent {
       this.roleId = roleIdParam ? Number(roleIdParam) : null;
       const userIdParam = navState.userId || this.route.snapshot.queryParamMap.get('userId');
       this.userId = userIdParam ? Number(userIdParam) : null;
+      this.roleName = navState.roleName || null;
+      this.userName = navState.userName || null;
       this.isRoleContext = !!this.roleId;
       this.isUserContext = !!this.userId;
       this.isEnterpriseContext = !!this.enterpriseId && !this.isRoleContext && !this.isUserContext;
+      this.canAddFeature = !this.isEnterpriseContext && !this.isRoleContext && !this.isUserContext;
+      this.setContextLabels();
 
       if (!this.moduleId || (!this.enterPriseType && !this.isEnterpriseContext && !this.isRoleContext && !this.isUserContext)) {
         this.shared.showError('Missing enterprise, role, user, or module information for features.');
@@ -81,6 +90,10 @@ export class FeaturesComponent {
   }
 
   onClickAddFeature() {
+    if (!this.canAddFeature) {
+      this.shared.showInfo('Adding new features is only available in type-wise permission.');
+      return;
+    }
     const dialogRef = this.dialog.open(AddFeatureComponent, {
       width: '30vw',
       data: {moduleId: this.moduleId, enterpriseType: this.enterPriseType}
@@ -240,7 +253,7 @@ export class FeaturesComponent {
     this.service.getRolesByEnterpriseId(this.enterpriseId).subscribe((res: any) => {
       const roles = res?.data?.content || res?.data?.responses || res?.data || [];
       const role = Array.isArray(roles) ? roles.find((r: any) => r?.id === this.roleId) : null;
-      const module = role?.moduleFeatures?.find((m: any) => m?.id === this.moduleId);
+      const module = role?.moduleFeatures?.find((m: any) => (m?.id === this.moduleId) || (m?.moduleId === this.moduleId));
       if (module) {
         this.populateModuleDetails(module as ModuleSummary);
         return;
@@ -266,7 +279,7 @@ export class FeaturesComponent {
       this.shared.showError('Missing user or module information for features.');
       return;
     }
-    this.service.getUserSummaryById(this.userId).subscribe((res: any) => {
+    this.service.getUserSummaryByEnterpriseId(this.enterpriseId,this.userId).subscribe((res: any) => {
       const modules = res?.data || res || [];
       const module = Array.isArray(modules) ? modules.find((m: any) => m?.id === this.moduleId) : null;
       if (module) {
@@ -287,5 +300,37 @@ export class FeaturesComponent {
         this.shared.showError('Failed to load user features.');
       }
     });
+  }
+
+  private setContextLabels() {
+    if (this.isUserContext) {
+      this.pageTitle = 'User Features';
+      if (this.userName) {
+        this.pageSubtitle = `Customizing features for ${this.userName}`;
+      } else if (this.userId) {
+        this.pageSubtitle = `Customizing features for user ${this.userId}`;
+      } else {
+        this.pageSubtitle = 'Customizing features for user';
+      }
+      return;
+    }
+    if (this.isRoleContext) {
+      this.pageTitle = 'Role Features';
+      if (this.roleName) {
+        this.pageSubtitle = `Customizing features for role ${this.roleName}`;
+      } else if (this.roleId) {
+        this.pageSubtitle = `Customizing features for role ${this.roleId}`;
+      } else {
+        this.pageSubtitle = 'Customizing features for role';
+      }
+      return;
+    }
+    if (this.isEnterpriseContext) {
+      this.pageTitle = 'Enterprise Features';
+      this.pageSubtitle = this.enterpriseId ? `Customizing features for enterprise ${this.enterpriseId}` : 'Customizing features for enterprise';
+      return;
+    }
+    this.pageTitle = 'Type-wise Features';
+    this.pageSubtitle = this.enterPriseType ? `Configuring features for type ${this.enterPriseType}` : 'Configure features by type';
   }
 }

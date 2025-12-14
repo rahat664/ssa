@@ -37,13 +37,25 @@ export const routes: Routes = [
   {
     path: 'type-wise-permission/features/:moduleId/:enterpriseType',
     title: 'Features',
-    loadComponent: () => import('./pages/sass/components/features/features.component').then(c => c.FeaturesComponent),
+    loadComponent: () => import('./pages/sass/components/features/type-features-page.component').then(c => c.TypeFeaturesPageComponent),
     canActivate: [authGuard]
   },
   {
     path: 'enterprise-detail/features/:moduleId/:enterpriseType',
     title: 'Features',
-    loadComponent: () => import('./pages/sass/components/features/features.component').then(c => c.FeaturesComponent),
+    loadComponent: () => import('./pages/sass/components/features/enterprise-features-page.component').then(c => c.EnterpriseFeaturesPageComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'role-wise-permission/features/:moduleId/:enterpriseType',
+    title: 'Features',
+    loadComponent: () => import('./pages/sass/components/features/role-features-page.component').then(c => c.RoleFeaturesPageComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'user-wise-permission/features/:moduleId/:enterpriseType',
+    title: 'Features',
+    loadComponent: () => import('./pages/sass/components/features/user-features-page.component').then(c => c.UserFeaturesPageComponent),
     canActivate: [authGuard]
   },
   {

@@ -72,8 +72,13 @@ export class EnterpriseService {
     return this.http.get(`${environment.userUrl}/new-user-role/summary/${userId}`);
   }
 
+  getUserSummaryByEnterpriseId(enterpriseId: number | string, userId?: number | string) {
+    return this.http.get(`${environment.userUrl}/new-user-role/summary?enterpriseId=${enterpriseId}&userId=${userId}`);
+  }
+
+
   getRoleByUserId(userId: number | string) {
-    return this.http.get(`${environment.userUrl}/new-user-role/summary/${userId}`);
+    return this.http.get(`${environment.userUrl}/new-user-role/list/${userId}`);
   }
 
   addEnterpriseIdFeature(body) {
