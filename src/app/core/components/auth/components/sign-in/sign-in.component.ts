@@ -60,6 +60,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   otpScreen = false;
   idName = 'otp1';
   time: Date = new Date(0, 0, 0, 0, 2, 0); // 2 minutes
+  showPassword = false;
   private countdownSubscription: Subscription | undefined;
   private errorSubscription: Subscription | undefined;
   private loadingSubscription: Subscription | undefined;
@@ -243,17 +244,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   togglePassword() {
-    const password = document.getElementById('password');
-    const icon = document.getElementById('icon');
-    if (password.getAttribute('type') === 'password') {
-      password.setAttribute('type', 'text');
-      icon.classList.remove('fa-eye-slash');
-      icon.classList.add('fa-eye');
-    } else {
-      password.setAttribute('type', 'password');
-      icon.classList.remove('fa-eye');
-      icon.classList.add('fa-eye-slash');
-    }
+    this.showPassword = !this.showPassword;
   }
 
   getEmailError() {

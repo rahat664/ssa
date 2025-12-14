@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-h2 leading-h2 md:text-h2 md:leading-h2 font-semibold">Add new module</h1>
     <button (click)="onCloseAddModule()" class="absolute top-8 right-8">
-      <i class="fal fa-times text-gray-500 text-xl"></i>
+    <span class="material-icons text-gray-500 text-xl leading-none">close</span>
     </button>
   </div>
   <form [formGroup]="moduleForm" (ngSubmit)="onSubmitModule()" class="py-9 flex flex-col space-y-6">
@@ -27,7 +27,7 @@
     </div>
     <button type="submit"
             class="bg-primary text-white rounded-lg px-6 py-3 font-semibold text-base leading-base hover:bg-blue-hover focus:outline-none focus:ring-2 focus:ring-blue-focus focus:ring-opacity-50">
-      <i *ngIf="loading" class="fas fa-spinner fa-spin mr-2"></i>
+      <span *ngIf="loading" class="material-icons animate-spin mr-2 text-base">refresh</span>
       Add Module
     </button>
   </form>

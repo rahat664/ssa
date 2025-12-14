@@ -141,7 +141,7 @@ export class FeaturesComponent {
         this.shared.showError('Missing enterprise information for features.');
         return;
       }
-      this.service.getModulesByEnterpriseId(this.enterpriseId).subscribe((res: any) => {
+      this.service.getModulesByEnterpriseId(this.enterpriseId, this.moduleId).subscribe((res: any) => {
         const modules = res?.data as ModuleSummary[] || [];
         const currentModule = modules.find((module: ModuleSummary) => module.id === this.moduleId);
         if (!currentModule) {
@@ -207,7 +207,7 @@ export class FeaturesComponent {
         return;
       }
       const body = {
-        roleId: this.roleId,
+        id: this.roleId,
         allowFeatureIds,
         denyFeatureIds
       };
@@ -279,7 +279,7 @@ export class FeaturesComponent {
       this.shared.showError('Missing user or module information for features.');
       return;
     }
-    this.service.getUserSummaryByEnterpriseId(this.enterpriseId,this.userId).subscribe((res: any) => {
+    this.service.getUserSummaryByEnterpriseId(this.enterpriseId,this.userId,this.moduleId).subscribe((res: any) => {
       const modules = res?.data || res || [];
       const module = Array.isArray(modules) ? modules.find((m: any) => m?.id === this.moduleId) : null;
       if (module) {

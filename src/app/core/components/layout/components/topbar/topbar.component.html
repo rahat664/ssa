@@ -33,7 +33,7 @@
           class="hidden text-gray-500 hover:text-gray-900 hover:bg-gray-100 p-2 rounded-lg">
           <span class="sr-only">Search</span>
           <!-- Search icon -->
-          <i class="fas fa-search"></i>
+          <span class="material-icons text-base leading-none">search</span>
         </button>
         <button
           matTooltip="Logout"
@@ -62,12 +62,12 @@
                 alt="profile-img" />
             </div>
             <span class="text-gray-500">{{ name }}</span>
-            <i
+            <span
               *ngIf="!isProfileOpened"
-              class="fas fa-caret-down ml-2 text-not-black"></i>
-            <i
+              class="material-icons ml-2 text-not-black text-base align-middle">expand_more</span>
+            <span
               *ngIf="isProfileOpened"
-              class="fas fa-caret-up ml-2 text-not-black"></i>
+              class="material-icons ml-2 text-not-black text-base align-middle">expand_less</span>
           </div>
         </button>
         <mat-menu #menu="matMenu" xPosition="before" class="w-full">

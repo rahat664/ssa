@@ -26,7 +26,10 @@ export class EnterpriseService {
     return this.http.put(`${this.enterpriseUrl}/${enterpriseId}`, enterpriseCreateModel);
   }
 
-  getModulesByEnterpriseId(enterpriseId: number) {
+  getModulesByEnterpriseId(enterpriseId: number, moduleId?: number) {
+    if (moduleId !== undefined) {
+      return this.http.get(`${this.modulesUrl}/${enterpriseId}/features-summary?moduleId=${moduleId}`);
+    }
     return this.http.get(`${this.modulesUrl}/${enterpriseId}/features-summary`);
   }
 
@@ -51,7 +54,10 @@ export class EnterpriseService {
   }
 
 
-  getRolesByEnterpriseId(enterpriseId: number) {
+  getRolesByEnterpriseId(enterpriseId: number, moduleId?: number) {
+    if (moduleId !== undefined) {
+      return this.http.get(`${environment.userUrl}/new-role/summary/${enterpriseId}?moduleId=${moduleId}`);
+    }
     return this.http.get(`${environment.userUrl}/new-role/summary/${enterpriseId}`);
   }
 
@@ -72,7 +78,10 @@ export class EnterpriseService {
     return this.http.get(`${environment.userUrl}/new-user-role/summary/${userId}`);
   }
 
-  getUserSummaryByEnterpriseId(enterpriseId: number | string, userId?: number | string) {
+  getUserSummaryByEnterpriseId(enterpriseId: number | string, userId?: number | string, moduleId?:number) {
+    if (moduleId !== undefined) {
+      return this.http.get(`${environment.userUrl}/new-user-role/summary?enterpriseId=${enterpriseId}&userId=${userId}&moduleId=${moduleId}`);
+    }
     return this.http.get(`${environment.userUrl}/new-user-role/summary?enterpriseId=${enterpriseId}&userId=${userId}`);
   }
 

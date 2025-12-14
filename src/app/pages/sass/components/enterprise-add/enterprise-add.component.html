@@ -1,6 +1,6 @@
 <div class="px-16 py-10 relative">
   <button (click)="onCloseAddEnterprise()" class="absolute top-8 right-8">
-    <i class="fal fa-times text-gray-500 text-xl"></i>
+    <span class="material-icons text-gray-500 text-xl leading-none">close</span>
   </button>
   <div class="flex items-center justify-center pb-6 border-b-2 border-line">
     <div class="flex flex-col space-y-4 items-center">
@@ -95,7 +95,7 @@
         formControlName="address"></textarea>
     </div>
     <button type="submit" class="bg-primary text-white rounded-lg px-6 py-3 font-semibold text-base leading-base hover:bg-blue-hover focus:outline-none focus:ring-2 focus:ring-blue-focus focus:ring-opacity-50">
-      <i *ngIf="loading" class="fas fa-spinner fa-spin mr-2"></i>
+      <span *ngIf="loading" class="material-icons animate-spin mr-2 text-base">refresh</span>
       Add Enterprise
     </button>
   </form>
