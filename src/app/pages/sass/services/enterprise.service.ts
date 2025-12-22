@@ -64,7 +64,7 @@ export class EnterpriseService {
 
 
   getUsersByEnterpriseId(enterpriseId: number, page: number = 0, searchTerm: string = '') {
-    let url = `${environment.userUrl}/api/users/all?enterpriseId=${enterpriseId}&page=${page}`;
+    let url = `${environment.userUrl}/api/users/admins?enterpriseId=${enterpriseId}&page=${page}`;
     if (searchTerm) {
       url += `&searchParam=${encodeURIComponent(searchTerm)}`;
     }
@@ -96,6 +96,10 @@ export class EnterpriseService {
 
   roleFeatureUpdate(body) {
     return this.http.put(`${environment.userUrl}/new-role`, body);
+  }
+
+  addRole(body) {
+    return this.http.post(`${environment.userUrl}/new-role`, body);
   }
 
   assignRoleToUser(body: any) {

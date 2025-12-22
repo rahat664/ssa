@@ -11,19 +11,35 @@
             </div>
         </div>
         <div class="p-4 bg-white rounded-lg  flex justify-between items-center">
-            <div class="flex flex-col space-y-2 ">
-                <label for="enterpriseId" class="text-body_title leading-body_title text-web-text-secondary">Enterprise</label>
-                <mat-form-field appearance="outline" class="example-full-width">
-                    <mat-select
-                            (selectionChange)="onChangeEnterprise($event)"
-                            id="enterpriseId"
-                            [(ngModel)]="enterpriseId"
-                            placeholder="Select Enterprise">
-                        <mat-option *ngFor="let ent of enterprise" [value]="ent.id">
-                            {{ ent.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-end md:gap-6">
+                <div class="flex flex-col space-y-2 ">
+                    <label for="enterpriseId" class="text-body_title leading-body_title text-web-text-secondary">Enterprise</label>
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-select
+                                (selectionChange)="onChangeEnterprise($event)"
+                                id="enterpriseId"
+                                [(ngModel)]="enterpriseId"
+                                placeholder="Select Enterprise">
+                            <mat-option *ngFor="let ent of enterprise" [value]="ent.id">
+                                {{ ent.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col space-y-2 ">
+                    <label for="roleId" class="text-body_title leading-body_title text-web-text-secondary">Roles</label>
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-select
+                                (selectionChange)="onChangeRole($event)"
+                                id="roleId"
+                                [(ngModel)]="selectedRoleId"
+                                placeholder="Select Role">
+                            <mat-option *ngFor="let role of roles" [value]="role.id">
+                                {{ role.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
             <button class="px-4 py-2 bg-primary text-white rounded-lg" (click)="onAddRoles()">Add Roles</button>
         </div>

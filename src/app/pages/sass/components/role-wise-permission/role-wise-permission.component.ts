@@ -12,6 +12,8 @@ import {Enterprise} from '../../models/enterprise.model';
 import {ModuleSummary} from '../../models/modules.model';
 import {SharedService} from '../../../../shared/service/shared.service';
 import {Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {AddRoleComponent} from '../add-role/add-role.component';
 
 @Component({
     selector: 'app-role-wise-permission',
@@ -36,13 +38,22 @@ export class RoleWisePermissionComponent {
     height: string = '0px';
     enterpriseId: number = -1;
     enterprise: Enterprise[] = [];
+    roles: Array<{ id: number; name: string }> = [];
+    selectedRoleId: number | 'all' = 'all';
+    allActiveModules: ModuleSummary[] = [];
+    allInactiveModules: ModuleSummary[] = [];
     activeModules: any[] = [];
     inactiveModules: any[] = [];
     isLoading = false;
     errorMessage = '';
     selectedEnterpriseType: string = '';
 
-    constructor(private service: EnterpriseService, private shared: SharedService, private router: Router) {
+    constructor(
+        private service: EnterpriseService,
+        private shared: SharedService,
+        private router: Router,
+        private dialog: MatDialog
+    ) {
     }
 
     ngOnInit() {
@@ -54,8 +65,44 @@ export class RoleWisePermissionComponent {
         this.getRoles(this.enterpriseId);
     }
 
-    onAddRoles() {
+    onChangeRole($event: MatSelectChange<any>) {
+        this.selectedRoleId = $event.value;
+        this.applyRoleFilter();
+    }
 
+    onAddRoles() {
+        if (!this.enterpriseId || this.enterpriseId === -1) {
+            this.shared.showError('Select an enterprise before adding a role.');
+            return;
+        }
+        this.dialog.open(AddRoleComponent, {
+            width: '30vw'
+        }).afterClosed().subscribe((res: any) => {
+            if (!res) {
+                return;
+            }
+            const roleName = String(res?.name || '').trim();
+            if (!roleName) {
+                this.shared.showError('Role name is required.');
+                return;
+            }
+            const body = {
+                name: roleName,
+                isActive: res?.isActive === true,
+                enterpriseId: this.enterpriseId,
+                featureIds: []
+            };
+            this.service.addRole(body).subscribe((resp: any) => {
+                if (resp?.status === 'OK' || resp?.status === 200) {
+                    this.shared.showSuccess(resp?.message || 'Role added successfully!');
+                    this.getRoles(this.enterpriseId);
+                } else {
+                    this.shared.showError(resp?.message || 'Role not added!');
+                }
+            }, error => {
+                this.shared.showError(error?.error?.message || 'Role not added!');
+            });
+        });
     }
 
     onClickToggle($event: { module: ModuleSummary; isActive: boolean; roleId: number; roleName?: string }) {
@@ -131,10 +178,13 @@ export class RoleWisePermissionComponent {
         this.errorMessage = '';
         this.activeModules = [];
         this.inactiveModules = [];
+        this.allActiveModules = [];
+        this.allInactiveModules = [];
         this.service.getRolesByEnterpriseId(enterpriseId).subscribe({
             next: (res: any) => {
                 const data = res?.data?.content || res?.data?.responses || res?.data || [];
                 const roles = Array.isArray(data) ? data : [];
+                this.roles = roles.map((role: any) => ({id: role.id, name: role.name}));
                 const allModules = [];
                 roles.forEach((role: any) => {
                     if (Array.isArray(role?.moduleFeatures)) {
@@ -146,12 +196,18 @@ export class RoleWisePermissionComponent {
                     }
                 });
                 //filter if module.activeFeature is greater than 0
-                this.activeModules = allModules.filter((mod: ModuleSummary) => {
+                this.allActiveModules = allModules.filter((mod: ModuleSummary) => {
                     return mod.activeFeature > 0;
                 });
-                this.inactiveModules = allModules.filter((mod: ModuleSummary) => {
+                this.allInactiveModules = allModules.filter((mod: ModuleSummary) => {
                     return mod.activeFeature === 0;
                 });
+                const roleIds = new Set(this.roles.map(role => role.id));
+                const firstRoleId = this.roles[0]?.id;
+                if (this.selectedRoleId === 'all' || !roleIds.has(this.selectedRoleId)) {
+                    this.selectedRoleId = firstRoleId ?? 'all';
+                }
+                this.applyRoleFilter();
             },
             error: () => {
                 this.errorMessage = 'Failed to load roles.';
@@ -160,5 +216,15 @@ export class RoleWisePermissionComponent {
                 this.isLoading = false;
             }
         });
+    }
+
+    private applyRoleFilter() {
+        if (this.selectedRoleId === 'all') {
+            this.activeModules = [...this.allActiveModules];
+            this.inactiveModules = [...this.allInactiveModules];
+            return;
+        }
+        this.activeModules = this.allActiveModules.filter((mod: ModuleSummary) => mod.roleId === this.selectedRoleId);
+        this.inactiveModules = this.allInactiveModules.filter((mod: ModuleSummary) => mod.roleId === this.selectedRoleId);
     }
 }
