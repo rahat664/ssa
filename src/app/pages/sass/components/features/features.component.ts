@@ -96,7 +96,7 @@ export class FeaturesComponent {
     }
     const dialogRef = this.dialog.open(AddFeatureComponent, {
       width: '30vw',
-      data: {moduleId: this.moduleId, enterpriseType: this.enterPriseType}
+      data: {moduleId: this.moduleId, enterpriseType: this.enterPriseType, featureList: this.featureList}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

@@ -35,6 +35,12 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'feature-module',
+    title: 'Feature & Module',
+    loadComponent: () => import('./pages/sass/components/feature-module/feature-module.component').then(c => c.FeatureModuleComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'type-wise-permission/features/:moduleId/:enterpriseType',
     title: 'Features',
     loadComponent: () => import('./pages/sass/components/features/type-features-page.component').then(c => c.TypeFeaturesPageComponent),

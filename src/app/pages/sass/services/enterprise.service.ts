@@ -49,6 +49,10 @@ export class EnterpriseService {
     return this.http.post(`${this.featureUrl}`, body);
   }
 
+  updateFeature(featureId: number, body: any) {
+    return this.http.put(`${this.featureUrl}/${featureId}`, body);
+  }
+
   typeFeatureAdd(body) {
     return this.http.post(`${this.enterpriseTypeFeaturesUrl}`, body);
   }
@@ -114,5 +118,15 @@ export class EnterpriseService {
     return this.http.get(`${environment.userUrl}/api/users/user-id/sl-${userId}`);
   }
 
+  getAllModules() {
+    return this.http.get(`${this.modulesUrl}`);
+  }
 
+  getAllFeatures() {
+    return this.http.get(`${this.featureUrl}`);
+  }
+
+  getFeatureByModuleId(moduleId: number) {
+    return this.http.get(`${this.featureUrl}?moduleId=${moduleId}`);
+  }
 }

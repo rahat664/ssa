@@ -4,6 +4,12 @@ export interface Feature {
   status: 'active' | 'inactive';
 }
 
+export enum FeatureListStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE',
+  Optional = 'OPTIONAL'
+}
+
 export interface ModuleSummary {
   roleId?: number;
   roleName?: string;
@@ -18,4 +24,34 @@ export interface ModuleSummary {
   updatedBy: string | null;
   updatedAt: string | null;
   active: boolean;
+}
+
+export interface ModuleListItem {
+  id: number;
+  name: string;
+  slug?: string | null;
+  createdBy?: string | null;
+  createdAt?: string | null;
+  updatedBy?: string | null;
+  updatedAt?: string | null;
+  active?: boolean;
+  status?: string | null;
+}
+
+export interface FeatureListItem {
+  id: number;
+  name: string;
+  status: FeatureListStatus;
+  slug?: string | null;
+  urls?: string[];
+  moduleId?: number | null;
+  moduleName?: string | null;
+  parent?: FeatureListItem | null;
+}
+
+export interface ModuleFeatureDetails extends ModuleListItem {
+  totalFeature: number;
+  activeFeature: number;
+  inactiveFeature: number;
+  features: FeatureListItem[];
 }
