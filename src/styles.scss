@@ -256,6 +256,7 @@ input::-webkit-outer-spin-button {
 .mat-mdc-dialog-container {
   border-radius: 0.75rem !important;
   overflow: hidden !important;
+  max-height: calc(100vh - 2rem) !important;
 }
 
 .mat-mdc-dialog-content > :last-child {
@@ -355,6 +356,23 @@ img:hover {
 
 .mat-mdc-dialog-surface {
   background-color: white !important;
+  max-height: calc(100vh - 2rem) !important;
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-mdc-dialog-container .dialog-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.mat-mdc-dialog-container .dialog-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .tel-form {
