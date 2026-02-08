@@ -36,6 +36,7 @@ import {SharedService} from '../../../../../shared/service/shared.service';
 
 @Component({
   selector: 'app-sign-in',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -59,9 +60,11 @@ export class SignInComponent implements OnInit, OnDestroy {
   otpScreen = false;
   idName = 'otp1';
   time: Date = new Date(0, 0, 0, 0, 2, 0); // 2 minutes
+  showPassword = false;
   private countdownSubscription: Subscription | undefined;
   private errorSubscription: Subscription | undefined;
   private loadingSubscription: Subscription | undefined;
+  private otpSubscriptions: Subscription[] = [];
   timeDisabled: boolean;
   error: string | null = null; // Add error property
   $loading: boolean;
@@ -114,6 +117,7 @@ export class SignInComponent implements OnInit, OnDestroy {
       this.loadingSubscription.unsubscribe();
       this.$loading = false;
     }
+    this.clearOtpSubscriptions();
   }
 
   createFormControls() {
@@ -144,7 +148,6 @@ export class SignInComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       if (this.usingEmail) {
         this.loginRequestPayload = {...this.loginRequestPayload, email:this.email.value, password: this.password.value};
-        console.log(this.loginRequestPayload)
         this.store.dispatch(login({ payload: this.loginRequestPayload }));
       } else {
         this.$loading = true;
@@ -174,6 +177,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   private setupOtpValidators() {
+    this.clearOtpSubscriptions();
     this.loginForm.get('otp1').setValidators([Validators.required]);
     this.loginForm.get('otp2').setValidators([Validators.required]);
     this.loginForm.get('otp3').setValidators([Validators.required]);
@@ -187,33 +191,33 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   private monitorOtpFields() {
-    this.loginForm.get('otp1').valueChanges.subscribe(value => {
+    this.otpSubscriptions.push(this.loginForm.get('otp1').valueChanges.subscribe(value => {
       // should not take input if the value is not a number
       if (isNaN(Number(value))) {
         this.loginForm.get('otp1').setValue('');
       } else {
         if (value?.length === 1) this.idName = 'otp2';
       }
-    });
-    this.loginForm.get('otp2').valueChanges.subscribe(value => {
+    }));
+    this.otpSubscriptions.push(this.loginForm.get('otp2').valueChanges.subscribe(value => {
       if (isNaN(Number(value))) {
         this.loginForm.get('otp2').setValue('');
       } else {
         if (value?.length === 1) this.idName = 'otp3';
       }
-    });
-    this.loginForm.get('otp3').valueChanges.subscribe(value => {
+    }));
+    this.otpSubscriptions.push(this.loginForm.get('otp3').valueChanges.subscribe(value => {
       if (isNaN(Number(value))) {
         this.loginForm.get('otp3').setValue('');
       } else {
         if (value?.length === 1) this.idName = 'otp4';
       }
-    });
-    this.loginForm.get('otp4').valueChanges.subscribe(value => {
+    }));
+    this.otpSubscriptions.push(this.loginForm.get('otp4').valueChanges.subscribe(value => {
       if (isNaN(Number(value))) {
         this.loginForm.get('otp4').setValue('');
       }
-    });
+    }));
   }
 
   private startCountdown() {
@@ -240,17 +244,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   togglePassword() {
-    const password = document.getElementById('password');
-    const icon = document.getElementById('icon');
-    if (password.getAttribute('type') === 'password') {
-      password.setAttribute('type', 'text');
-      icon.classList.remove('fa-eye-slash');
-      icon.classList.add('fa-eye');
-    } else {
-      password.setAttribute('type', 'password');
-      icon.classList.remove('fa-eye');
-      icon.classList.add('fa-eye-slash');
-    }
+    this.showPassword = !this.showPassword;
   }
 
   getEmailError() {
@@ -417,6 +411,7 @@ export class SignInComponent implements OnInit, OnDestroy {
     this.loginForm.get('otp2').updateValueAndValidity();
     this.loginForm.get('otp3').updateValueAndValidity();
     this.loginForm.get('otp4').updateValueAndValidity();
+    this.clearOtpSubscriptions();
   }
 
   protected readonly CountryISO = CountryISO;
@@ -430,4 +425,9 @@ export class SignInComponent implements OnInit, OnDestroy {
     invalidNumberError: '',
     requiredError: 'This field is required',
   };
+
+  private clearOtpSubscriptions() {
+    this.otpSubscriptions.forEach(sub => sub.unsubscribe());
+    this.otpSubscriptions = [];
+  }
 }

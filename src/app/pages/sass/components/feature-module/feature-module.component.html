@@ -1,0 +1,221 @@
+<div class="flex flex-col md:mx-3 pb-4 gap-4">
+  <div class="bg-white rounded-lg shadow-sm p-4">
+    <div>
+      <p class="text-xs uppercase tracking-wide text-gray-500">Feature and Module Management</p>
+      <h1 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold text-not-black">Feature/Module List</h1>
+      <p class="text-sm text-gray-500 mt-1">Manage module access and feature toggles.</p>
+    </div>
+  </div>
+
+  <mat-tab-group
+    [selectedIndex]="activeTab === 'modules' ? 0 : 1"
+    (selectedIndexChange)="setTab($event === 0 ? 'modules' : 'features')"
+    class="bg-white rounded-lg shadow-sm">
+    <mat-tab label="Module List">
+      <div class="p-4">
+        <div *ngIf="isLoadingModules" class="text-center py-6 text-secondary">Loading modules...</div>
+        <ng-container *ngIf="!isLoadingModules">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold">Modules</h2>
+            <button
+              type="button"
+              (click)="onAddModule()"
+              class="px-4 py-2 bg-primary text-white rounded-lg">
+              Add Module
+            </button>
+          </div>
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold">Active Modules</h2>
+            <span class="text-xs text-secondary">{{ activeModules.length }} active</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3" *ngIf="activeModules?.length > 0; else noActiveModules">
+            <div
+              *ngFor="let module of activeModules"
+              class="rounded-xl"
+              [ngClass]="selectedModule?.id === module.id ? 'ring-2 ring-primary ring-offset-2' : ''">
+              <div
+                class="bg-white border border-disabled rounded-xl p-4 space-y-3 cursor-pointer hover:border-primary transition-colors"
+                (click)="onSelectModule(module)">
+                <div class="flex items-start justify-between">
+                  <div class="space-y-1">
+                    <h3 class="text-menu-title-mobile leading-h2 font-semibold text-not-black">{{ module.name }}</h3>
+                    <p class="text-xs text-secondary" *ngIf="module.slug">Slug: {{ module.slug }}</p>
+                  </div>
+                  <span class="text-xs text-secondary">#{{ module.id }}</span>
+                </div>
+                <div class="text-xs text-gray-500 space-y-1">
+                  <div *ngIf="module.createdAt">Created: {{ module.createdAt | date : 'd MMM yyyy; h:mm a' }}</div>
+                  <div *ngIf="module.updatedAt">Updated: {{ module.updatedAt | date : 'd MMM yyyy; h:mm a' }}</div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-secondary" *ngIf="module.createdBy">Created by: {{ module.createdBy }}</span>
+                  <button
+                    type="button"
+                    (click)="onSelectModule(module, true); $event.stopPropagation()"
+                    class="text-sm font-semibold text-primary hover:text-blue-800">
+                    View Features
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #noActiveModules>
+            <div class="flex flex-col items-center justify-center py-10 space-y-4">
+              <img src="assets/svg/no-data.svg" alt="No Active Modules" class="w-32 h-32">
+              <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">No Active Modules</h3>
+            </div>
+          </ng-template>
+
+          <div class="flex items-center justify-between mb-3 mt-6">
+            <h2 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold">Inactive Modules</h2>
+            <span class="text-xs text-secondary">{{ inactiveModules.length }} inactive</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3" *ngIf="inactiveModules?.length > 0; else noInactiveModules">
+            <div
+              *ngFor="let module of inactiveModules"
+              class="rounded-xl"
+              [ngClass]="selectedModule?.id === module.id ? 'ring-2 ring-primary ring-offset-2' : ''">
+              <div
+                class="bg-white border border-disabled rounded-xl p-4 space-y-3 cursor-pointer hover:border-primary transition-colors"
+                (click)="onSelectModule(module)">
+                <div class="flex items-start justify-between">
+                  <div class="space-y-1">
+                    <h3 class="text-menu-title-mobile leading-h2 font-semibold text-not-black">{{ module.name }}</h3>
+                    <p class="text-xs text-secondary" *ngIf="module.slug">Slug: {{ module.slug }}</p>
+                  </div>
+                  <span class="text-xs text-secondary">#{{ module.id }}</span>
+                </div>
+                <div class="text-xs text-gray-500 space-y-1">
+                  <div *ngIf="module.createdAt">Created: {{ module.createdAt | date : 'd MMM yyyy; h:mm a' }}</div>
+                  <div *ngIf="module.updatedAt">Updated: {{ module.updatedAt | date : 'd MMM yyyy; h:mm a' }}</div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-secondary" *ngIf="module.createdBy">Created by: {{ module.createdBy }}</span>
+                  <button
+                    type="button"
+                    (click)="onSelectModule(module, true); $event.stopPropagation()"
+                    class="text-sm font-semibold text-primary hover:text-blue-800">
+                    View Features
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #noInactiveModules>
+            <div class="flex flex-col items-center justify-center py-10 space-y-4">
+              <img src="assets/svg/no-data.svg" alt="No Inactive Modules" class="w-32 h-32">
+              <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">No Inactive Modules</h3>
+            </div>
+          </ng-template>
+        </ng-container>
+      </div>
+    </mat-tab>
+    <mat-tab label="Feature List" [disabled]="!selectedModule">
+      <div class="p-4">
+        <div class="flex justify-between items-center mb-1 border-b-2 border-disabled px-2 py-3">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-gray-500">Feature List</p>
+            <h1 class="text-xl font-bold text-gray-900">{{ moduleDetails?.name || selectedModule?.name || 'Select a module' }}</h1>
+            <p class="text-sm text-gray-500 mt-1" *ngIf="selectedModule">
+              {{ totalOptions }} total options |
+              <span class="text-gray-700">{{ activeCount }} activated</span> |
+              <span class="text-gray-400">{{ inactiveCount }} inactive</span>
+              <span class="text-gray-400" *ngIf="optionalCount"> | {{ optionalCount }} optional</span>
+            </p>
+            <p class="text-xs text-gray-500 mt-1" *ngIf="selectedModule">
+              Configure feature access for the selected module.
+            </p>
+          </div>
+          <button
+            type="button"
+            (click)="onAddFeature()"
+            [disabled]="!selectedModule"
+            class="px-4 py-2 bg-primary text-white rounded-lg disabled:opacity-60">
+            Add Feature
+          </button>
+        </div>
+
+        <ng-container *ngIf="selectedModule; else noModuleSelected">
+          <div *ngIf="isLoadingFeatures" class="text-center py-6 text-secondary">Loading features...</div>
+          <ng-container *ngIf="!isLoadingFeatures">
+            <div class="grid grid-cols-12 gap-4 px-4 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider">
+              <div class="col-span-4">Feature</div>
+              <div class="col-span-3">Urls</div>
+              <div class="col-span-2">Parent</div>
+              <div class="col-span-2 text-center">Status</div>
+              <div class="col-span-1 text-right">Actions</div>
+            </div>
+
+            <div class="flex flex-col space-y-1">
+              <ng-container *ngIf="featureList && featureList.length > 0; else noFields">
+                <div *ngFor="let field of featureList; let isOdd = odd"
+                     class="grid grid-cols-12 gap-4 items-center px-4 py-3 rounded-md transition-colors hover:bg-gray-100 group"
+                     [ngClass]="{'bg-gray-50': isOdd, 'bg-white': !isOdd}">
+
+                  <div class="col-span-4">
+                    <div class="text-sm font-medium text-gray-700">{{ field.name }}</div>
+                    <div class="text-xs text-gray-500" *ngIf="field.slug">Slug: {{ field.slug }}</div>
+                    <div class="text-xs text-gray-500" *ngIf="field.moduleName">Module: {{ field.moduleName }}</div>
+                  </div>
+
+                  <div class="col-span-3">
+                    <div class="text-xs text-gray-600" *ngIf="field.urls?.length; else noUrls">
+                      {{ field.urls?.join(', ') }}
+                    </div>
+                    <ng-template #noUrls>
+                      <span class="text-xs text-gray-400">No urls</span>
+                    </ng-template>
+                  </div>
+
+                  <div class="col-span-2">
+                    <div class="text-xs text-gray-600" *ngIf="field.parent?.name; else noParent">
+                      {{ field.parent?.name }}
+                    </div>
+                    <ng-template #noParent>
+                      <span class="text-xs text-gray-400">None</span>
+                    </ng-template>
+                  </div>
+
+                  <div class="col-span-2 flex justify-center items-center w-full">
+                    <button
+                      type="button"
+                      (click)="toggleFeature(field)"
+                      class="px-3 py-1 rounded-full text-xs font-semibold border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary"
+                      [ngClass]="{
+                        'bg-green-50 text-green-700 border-green-200': field.status === featureStatus.Active,
+                        'bg-red-50 text-red-700 border-red-200': field.status === featureStatus.Inactive,
+                        'bg-amber-50 text-amber-700 border-amber-200': field.status === featureStatus.Optional
+                      }">
+                      {{ field.status === featureStatus.Active ? 'Active' : (field.status === featureStatus.Optional ? 'Optional' : 'Inactive') }}
+                    </button>
+                  </div>
+
+                  <div class="col-span-1 flex justify-end">
+                    <button
+                      type="button"
+                      (click)="onEditFeature(field)"
+                      class="text-gray-400 hover:text-[#14403C] transition-colors p-1 rounded-full hover:bg-gray-200">
+                      <img src="assets/svg/edit.svg" alt="Edit">
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-template #noFields>
+                <div class="flex flex-col items-center justify-center py-10 space-y-4">
+                  <img src="assets/svg/no-data.svg" alt="No Features" class="w-32 h-32">
+                  <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">No features available.</h3>
+                </div>
+              </ng-template>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-template #noModuleSelected>
+          <div class="flex flex-col items-center justify-center py-10 space-y-4">
+            <img src="assets/svg/no-data.svg" alt="Select Module" class="w-32 h-32">
+            <h3 class="text-h3_mobile leading-h3_mobile md:text-h3 md:leading-h3 font-semibold text-not-black">Select a module to view features.</h3>
+          </div>
+        </ng-template>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

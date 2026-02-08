@@ -4,6 +4,7 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-layout',
+  standalone: true,
   imports: [
     TopbarComponent,
     SidebarComponent

@@ -2,7 +2,8 @@ import {ChangeDetectorRef, Directive, ElementRef, Input} from '@angular/core';
 
 
 @Directive({
-  selector: '[appInputAutoFocus]'
+  selector: '[appInputAutoFocus]',
+  standalone: true
 })
 export class InputAutoFocusDirective {
 

@@ -35,21 +35,51 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-    path: 'type-wise-permission/features/:moduleId',
-    title: 'Features',
-    loadComponent: () => import('./pages/sass/components/features/features.component').then(c => c.FeaturesComponent),
+    path: 'feature-module',
+    title: 'Feature & Module',
+    loadComponent: () => import('./pages/sass/components/feature-module/feature-module.component').then(c => c.FeatureModuleComponent),
     canActivate: [authGuard]
   },
   {
-    path: 'enterprise-detail/features/:moduleId',
+    path: 'type-wise-permission/features/:moduleId/:enterpriseType',
     title: 'Features',
-    loadComponent: () => import('./pages/sass/components/features/features.component').then(c => c.FeaturesComponent),
+    loadComponent: () => import('./pages/sass/components/features/type-features-page.component').then(c => c.TypeFeaturesPageComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'enterprise-detail/features/:moduleId/:enterpriseType',
+    title: 'Features',
+    loadComponent: () => import('./pages/sass/components/features/enterprise-features-page.component').then(c => c.EnterpriseFeaturesPageComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'role-wise-permission/features/:moduleId/:enterpriseType',
+    title: 'Features',
+    loadComponent: () => import('./pages/sass/components/features/role-features-page.component').then(c => c.RoleFeaturesPageComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'user-wise-permission/features/:moduleId/:enterpriseType',
+    title: 'Features',
+    loadComponent: () => import('./pages/sass/components/features/user-features-page.component').then(c => c.UserFeaturesPageComponent),
     canActivate: [authGuard]
   },
   {
     path: 'role-wise-permission',
     title: 'Role Wise Permission',
     loadComponent: () => import('./pages/sass/components/role-wise-permission/role-wise-permission.component').then(c => c.RoleWisePermissionComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'user-wise-permission',
+    title: 'User Wise Permission',
+    loadComponent: () => import('./pages/sass/components/user-wise-permission/user-wise-permission.component').then(c => c.UserWisePermissionComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'user-wise-permission/user/:userId',
+    title: 'User Summary',
+    loadComponent: () => import('./pages/sass/components/user-summary').then(c => c.UserSummaryComponent),
     canActivate: [authGuard]
   },
   {

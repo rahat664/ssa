@@ -11,6 +11,7 @@ import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-enterprise-list',
+  standalone: true,
   imports: [
     GetElementHeightDirective,
     GiveMaxHeightDirective,

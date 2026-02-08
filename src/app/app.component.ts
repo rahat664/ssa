@@ -11,6 +11,7 @@ import {SharedService} from './shared/service/shared.service';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [
     RouterOutlet,
     LayoutComponent,

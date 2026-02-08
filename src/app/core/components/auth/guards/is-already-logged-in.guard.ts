@@ -18,18 +18,13 @@ class PermissionService {
 
   canActivate(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
     if (this.auth.isLoggedIn()) {
-      return this.isAdmin()
+      return this.auth.isAdmin()
         ? this.router.navigate(['/dashboard'])
         : this.router.navigate(['/trip-list']);
     } else {
       // Redirect to the login page with the return url
       return true;
     }
-  }
-
-  private isAdmin() {
-    const role = localStorage.getItem('role');
-    return role.includes('ROLE_SUPERADMIN');
   }
 }
 

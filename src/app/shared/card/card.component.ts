@@ -5,6 +5,7 @@ import {SharedService} from '../service/shared.service';
 
 @Component({
   selector: 'app-card',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
@@ -12,6 +13,7 @@ import {SharedService} from '../service/shared.service';
 })
 export class CardComponent {
   @Input() moduleSummary: ModuleSummary
+  @Input() roleName?: string;
   @Output() customize: EventEmitter<any> = new EventEmitter();
   @Output() toggle: EventEmitter<any> = new EventEmitter();
   isToggled: boolean = false;

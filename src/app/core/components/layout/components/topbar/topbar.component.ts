@@ -10,6 +10,7 @@ import {environment} from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-topbar',
+  standalone: true,
   imports: [CommonModule, MatMenuModule, MatTooltip, RouterLink],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.scss'

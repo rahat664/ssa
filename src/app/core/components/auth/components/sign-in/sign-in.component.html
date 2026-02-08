@@ -38,7 +38,8 @@
           <mat-form-field appearance="outline" class="example-full-width">
             <input
               id="email"
-              type="text"
+              type="email"
+              autocomplete="email"
               matInput
               formControlName="email"
               placeholder="User email"/>
@@ -77,49 +78,53 @@
               id="otp1"
               appInputAutoFocus
               idName="{{ idName }}"
-              [autocomplete]="false"
+              autocomplete="one-time-code"
+              inputmode="numeric"
               formControlName="otp1"
-              type="email"
+              type="text"
               class="bg-input rounded-lg border-none h-[5.375rem] w-[5.375rem] py-4 customInput"
               [minlength]="1"
               [maxLength]="1"
-              name="phoneNumber"/>
+              name="otp1"/>
             <input
               id="otp2"
               appInputAutoFocus
               idName="{{ idName }}"
               #otp2
-              [autocomplete]="false"
+              autocomplete="one-time-code"
+              inputmode="numeric"
               formControlName="otp2"
-              type="email"
+              type="text"
               class="bg-input rounded-lg border-none h-[5.375rem] w-[5.375rem] py-4 customInput"
               [minlength]="1"
               [maxLength]="1"
-              name="phoneNumber"/>
+              name="otp2"/>
             <input
               id="otp3"
               appInputAutoFocus
               idName="{{ idName }}"
               #otp3
-              [autocomplete]="false"
+              autocomplete="one-time-code"
+              inputmode="numeric"
               formControlName="otp3"
-              type="email"
+              type="text"
               class="bg-input rounded-lg border-none h-[5.375rem] w-[5.375rem] py-4 customInput"
               [minlength]="1"
               [maxLength]="1"
-              name="phoneNumber"/>
+              name="otp3"/>
             <input
               id="otp4"
               appInputAutoFocus
               idName="{{ idName }}"
               #otp4
-              [autocomplete]="false"
+              autocomplete="one-time-code"
+              inputmode="numeric"
               formControlName="otp4"
-              type="email"
+              type="text"
               class="bg-input rounded-lg border-none h-[5.375rem] w-[5.375rem] customInput"
               [minlength]="1"
               [maxLength]="1"
-              name="phoneNumber"/>
+              name="otp4"/>
           </div>
         </div>
         <div
@@ -133,15 +138,20 @@
               class="example-full-width w-full">
               <input
                 id="password"
-                type="password"
+                [type]="showPassword ? 'text' : 'password'"
+                autocomplete="current-password"
                 matInput
                 formControlName="password"
                 placeholder="password"/>
             </mat-form-field>
-            <i
-              id="icon"
-              class="fas fa-eye-slash absolute right-4 top-1/3 cursor-pointer"
-              (click)="togglePassword()"></i>
+            <button
+              type="button"
+              class="absolute right-4 top-1/3 cursor-pointer bg-transparent border-0 p-0"
+              (click)="togglePassword()">
+              <span class="material-icons text-base align-middle">
+                {{ showPassword ? 'visibility_off' : 'visibility' }}
+              </span>
+            </button>
           </div>
           <!--        error-message-->
           <div
@@ -155,7 +165,7 @@
           [disabled]="$loading"
           *ngIf="usingEmail"
           class="btn bg-primary font-semibold text-white rounded-lg px-4 py-[1.125rem] w-full">
-          <i *ngIf="$loading" class="fas fa-spinner fa-spin text-white"></i>
+          <span *ngIf="$loading" class="material-icons animate-spin text-white text-base align-middle">refresh</span>
           Login
         </button>
         <button
@@ -164,14 +174,14 @@
           (click)="onOtpLogin()"
           *ngIf="otpScreen"
           class="btn bg-primary font-semibold text-white rounded-lg px-4 py-[1.125rem] w-full">
-          <i *ngIf="$loading" class="fas fa-spinner fa-spin text-white"></i>
+          <span *ngIf="$loading" class="material-icons animate-spin text-white text-base align-middle">refresh</span>
           Login
         </button>
         <button
           [disabled]="$loading"
           *ngIf="!usingEmail && !otpScreen"
           class="btn bg-primary font-semibold text-white rounded-lg px-4 py-[1.125rem] w-full">
-          <i *ngIf="$loading" class="fas fa-spinner fa-spin text-white"></i>
+          <span *ngIf="$loading" class="material-icons animate-spin text-white text-base align-middle">refresh</span>
           Send OTP
         </button>
         <!--        or using phone number-->

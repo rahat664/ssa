@@ -20,6 +20,25 @@ export class AuthService {
     private store: Store<{ auth: AuthState }>
   ) {}
 
+  private getRoles(): string[] {
+    const stored = localStorage.getItem('role');
+    if (!stored) {
+      return [];
+    }
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch (e) {
+      // Fallback to raw string includes check
+      if (typeof stored === 'string' && stored.length) {
+        return [stored];
+      }
+    }
+    return [];
+  }
+
   login(payload: LoginRequest): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(
       environment.userUrl + '/auth/login',
@@ -61,11 +80,10 @@ export class AuthService {
   }
 
   isAdmin() {
-    const role = localStorage.getItem('role');
-    return role.includes('ROLE_SUPERADMIN') ;
+    return this.getRoles().includes('ROLE_SUPERADMIN');
   }
 
   isCustomerAdmin() {
-    return localStorage.getItem('role').includes('ROLE_CUSTOMER_ADMIN');
+    return this.getRoles().includes('ROLE_CUSTOMER_ADMIN');
   }
 }

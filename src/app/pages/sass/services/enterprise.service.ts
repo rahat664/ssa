@@ -22,8 +22,14 @@ export class EnterpriseService {
   createEnterprise(enterpriseCreateModel: EnterpriseCreate) {
     return this.http.post(this.enterpriseUrl, enterpriseCreateModel);
   }
+  updateEnterprise(enterpriseId: number, enterpriseCreateModel: EnterpriseCreate) {
+    return this.http.put(`${this.enterpriseUrl}/${enterpriseId}`, enterpriseCreateModel);
+  }
 
-  getModulesByEnterpriseId(enterpriseId: number) {
+  getModulesByEnterpriseId(enterpriseId: number, moduleId?: number) {
+    if (moduleId !== undefined) {
+      return this.http.get(`${this.modulesUrl}/${enterpriseId}/features-summary?moduleId=${moduleId}`);
+    }
     return this.http.get(`${this.modulesUrl}/${enterpriseId}/features-summary`);
   }
 
@@ -43,19 +49,84 @@ export class EnterpriseService {
     return this.http.post(`${this.featureUrl}`, body);
   }
 
+  updateFeature(featureId: number, body: any) {
+    return this.http.put(`${this.featureUrl}/${featureId}`, body);
+  }
+
   typeFeatureAdd(body) {
     return this.http.post(`${this.enterpriseTypeFeaturesUrl}`, body);
   }
 
-  getRole() {
-    return this.http.get(`${environment.userUrl}/api/roles`);
-  }
 
-  getRolesByEnterpriseId(enterpriseId: number) {
+  getRolesByEnterpriseId(enterpriseId: number, moduleId?: number) {
+    if (moduleId !== undefined) {
+      return this.http.get(`${environment.userUrl}/new-role/summary/${enterpriseId}?moduleId=${moduleId}`);
+    }
     return this.http.get(`${environment.userUrl}/new-role/summary/${enterpriseId}`);
   }
 
-  getUsers(page: number = 0, size: number = 30) {
-    return this.http.get(`${environment.userUrl}/api/users?page=${page}&size=${size}`);
+
+
+  getUsersByEnterpriseId(enterpriseId: number, page: number = 0, searchTerm: string = '') {
+    let url = `${environment.userUrl}/api/users/admins?enterpriseId=${enterpriseId}&page=${page}`;
+    if (searchTerm) {
+      url += `&searchParam=${encodeURIComponent(searchTerm)}`;
+    }
+    return this.http.get(url);
+  }
+
+  getUserSummaryById(userId: number | string, roleId?: number) {
+    if (roleId !== undefined) {
+      return this.http.get(`${environment.userUrl}/new-user-role/summary/${userId}/${roleId}`);
+    }
+    return this.http.get(`${environment.userUrl}/new-user-role/summary/${userId}`);
+  }
+
+  getUserSummaryByEnterpriseId(enterpriseId: number | string, userId?: number | string, moduleId?:number) {
+    if (moduleId !== undefined) {
+      return this.http.get(`${environment.userUrl}/new-user-role/summary?enterpriseId=${enterpriseId}&userId=${userId}&moduleId=${moduleId}`);
+    }
+    return this.http.get(`${environment.userUrl}/new-user-role/summary?enterpriseId=${enterpriseId}&userId=${userId}`);
+  }
+
+
+  getRoleByUserId(userId: number | string) {
+    return this.http.get(`${environment.userUrl}/new-user-role/list/${userId}`);
+  }
+
+  addEnterpriseIdFeature(body) {
+    return this.http.post(`${environment.userUrl}/api/enterprise-features/save`, body);
+  }
+
+  roleFeatureUpdate(body) {
+    return this.http.put(`${environment.userUrl}/new-role`, body);
+  }
+
+  addRole(body) {
+    return this.http.post(`${environment.userUrl}/new-role`, body);
+  }
+
+  assignRoleToUser(body: any) {
+    return this.http.put(`${environment.userUrl}/new-user-role`, body);
+  }
+
+  updateUserPermission(body) {
+    return this.http.put(`${environment.userUrl}/new-user-role`, body);
+  }
+
+  getUserById(userId: number | string) {
+    return this.http.get(`${environment.userUrl}/api/users/user-id/sl-${userId}`);
+  }
+
+  getAllModules() {
+    return this.http.get(`${this.modulesUrl}`);
+  }
+
+  getAllFeatures() {
+    return this.http.get(`${this.featureUrl}`);
+  }
+
+  getFeatureByModuleId(moduleId: number) {
+    return this.http.get(`${this.featureUrl}?moduleId=${moduleId}`);
   }
 }

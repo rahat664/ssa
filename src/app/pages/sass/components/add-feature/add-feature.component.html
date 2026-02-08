@@ -1,8 +1,10 @@
 <div class="px-16 py-10 relative">
   <div>
-    <h1 class="text-h2 leading-h2 md:text-h2 md:leading-h2 font-semibold">Add new feature</h1>
+    <h1 class="text-h2 leading-h2 md:text-h2 md:leading-h2 font-semibold">
+      {{ isEdit ? 'Edit feature' : 'Add new feature' }}
+    </h1>
     <button (click)="onCloseAddModule()" class="absolute top-8 right-8">
-      <i class="fal fa-times text-gray-500 text-xl"></i>
+      <span class="material-icons text-gray-500 text-xl leading-none">close</span>
     </button>
   </div>
   <form [formGroup]="featureForm" (ngSubmit)="onSubmitModule()" class="py-9 flex flex-col space-y-6">
@@ -25,6 +27,61 @@
       </div>
     </div>
     <div class="flex flex-col space-y-2 w-full">
+      <label for="slug" class="text-body_title leading-body_title text-web-text-secondary">Slug</label>
+      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+            error: featureForm.get('slug').invalid && featureForm.get('slug').touched,
+          }">
+        <input
+          id="slug"
+          [minLength]="2"
+          [maxLength]="50"
+          type="text"
+          matInput
+          formControlName="slug"
+          placeholder="Slug Name"/>
+      </mat-form-field>
+      <div *ngIf="featureForm.get('slug').touched && featureForm.get('slug').invalid" class="text-red text-xs">
+        <span>Slug name is required</span>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="status" class="text-body_title leading-body_title text-web-text-secondary">Status</label>
+      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+            error: featureForm.get('status').invalid && featureForm.get('status').touched,
+          }">
+        <mat-select
+          id="status"
+          formControlName="status"
+          placeholder="Select Status">
+          <mat-option *ngFor="let type of statusOptions" [value]="type.value">
+            {{ type.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="featureForm.get('status').touched && featureForm.get('status').invalid" class="text-red text-xs">
+        <span>Slug name is required</span>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="parent" class="text-body_title leading-body_title text-web-text-secondary">Parent</label>
+      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+            error: featureForm.get('parent').invalid && featureForm.get('parent').touched,
+          }">
+        <mat-select
+          id="parent"
+          formControlName="parent"
+          placeholder="Select parent">
+          <mat-option *ngFor="let feature of featureList" [value]="feature">
+            {{ feature.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="featureForm.get('status').touched && featureForm.get('status').invalid" class="text-red text-xs">
+        <span>Slug name is required</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col space-y-2 w-full">
       <label for="urls" class="text-body_title leading-body_title text-web-text-secondary">Urls</label>
       <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
             error: featureForm.get('name').invalid && featureForm.get('name').touched,
@@ -36,14 +93,11 @@
           formControlName="urls"
           placeholder="Urls"/>
       </mat-form-field>
-      <div *ngIf="featureForm.get('urls').touched && featureForm.get('urls').invalid" class="text-red text-xs">
-        <span>Feature urls is required</span>
-      </div>
     </div>
     <button type="submit"
             class="bg-primary text-white rounded-lg px-6 py-3 font-semibold text-base leading-base hover:bg-blue-hover focus:outline-none focus:ring-2 focus:ring-blue-focus focus:ring-opacity-50">
-      <i *ngIf="loading" class="fas fa-spinner fa-spin mr-2"></i>
-      Add Feature
+      <span *ngIf="loading" class="material-icons animate-spin mr-2 text-base">refresh</span>
+      {{ isEdit ? 'Update Feature' : 'Add Feature' }}
     </button>
   </form>
 </div>

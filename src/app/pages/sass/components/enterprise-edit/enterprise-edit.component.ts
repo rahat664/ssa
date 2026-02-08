@@ -15,6 +15,7 @@ import {MatFormField} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-enterprise-edit',
+  standalone: true,
   imports: [
     AlphabetOnlyDirective,
     MatFormField,
@@ -58,7 +59,7 @@ export class EnterpriseEditComponent {
       this.enterpriseCreateModel.address = this.enterpriseForm.get('address')?.value;
       this.enterpriseCreateModel.enterpriseType = this.enterpriseForm.get('enterpriseType')?.value;
 
-      this.enterprise.createEnterprise(this.enterpriseCreateModel).subscribe({
+      this.enterprise.updateEnterprise(this.data?.enterprise?.id, this.enterpriseCreateModel).subscribe({
         next: (result: Enterprise) => {
           this.loading = false;
           this.shared.showSuccess('Enterprise updated successfully', 'Success');

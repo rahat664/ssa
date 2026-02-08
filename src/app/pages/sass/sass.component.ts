@@ -3,6 +3,7 @@ import {EnterpriseListComponent} from './components/enterprise-list/enterprise-l
 
 @Component({
   selector: 'app-sass',
+  standalone: true,
   imports: [
     EnterpriseListComponent
   ],

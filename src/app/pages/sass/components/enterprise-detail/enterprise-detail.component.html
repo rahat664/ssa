@@ -44,7 +44,7 @@
       <div class="flex flex-col space-y-2">
         <h2 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold">Active Modules</h2>
         <div class="grid grid-cols-3 gap-3" *ngIf="activeModules?.length > 0; else noActiveModules">
-          <app-card (toggle)="onClickToggle($event)" [moduleSummary]="module" *ngFor="let module of activeModules"></app-card>
+          <app-card (customize)="onCustomize($event)" (toggle)="onClickToggle($event)" [moduleSummary]="module" *ngFor="let module of activeModules"></app-card>
         </div>
         <ng-template #noActiveModules>
           <div class="flex flex-col items-center justify-center py-10 space-y-4">
@@ -56,7 +56,7 @@
       <div class="flex flex-col space-y-2">
         <h2 class="text-h2_mobile leading-h2_mobile md:text-h2 md:leading-h2 font-semibold">Inactive Modules</h2>
         <div class="grid grid-cols-3 gap-3" *ngIf="inactiveModules?.length > 0; else noInactiveModules">
-          <app-card (toggle)="onClickToggle($event)" [moduleSummary]="module" *ngFor="let module of inactiveModules"></app-card>
+          <app-card (customize)="onCustomize($event)" (toggle)="onClickToggle($event)" [moduleSummary]="module" *ngFor="let module of inactiveModules"></app-card>
         </div>
         <ng-template #noInactiveModules>
           <div class="flex flex-col items-center justify-center py-10 space-y-4">
