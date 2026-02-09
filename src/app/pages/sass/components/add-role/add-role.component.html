@@ -1,43 +1,45 @@
-<div class="px-16 py-10 relative">
+<div class="dialog-shell px-16 py-10 relative">
   <div>
     <h1 class="text-h2 leading-h2 md:text-h2 md:leading-h2 font-semibold">Add new role</h1>
     <button (click)="onCloseAddRole()" class="absolute top-8 right-8">
       <span class="material-icons text-gray-500 text-xl leading-none">close</span>
     </button>
   </div>
-  <form [formGroup]="roleForm" (ngSubmit)="onSubmitRole()" class="py-9 flex flex-col space-y-6">
-    <div class="flex flex-col space-y-2 w-full">
-      <label for="name" class="text-body_title leading-body_title text-web-text-secondary">Name</label>
-      <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
-            error: roleForm.get('name').invalid && roleForm.get('name').touched
-          }">
-        <input
-          appAlphabetOnly
-          id="name"
-          [minLength]="2"
-          [maxLength]="50"
-          type="text"
-          matInput
-          formControlName="name"
-          placeholder="Role Name"/>
-      </mat-form-field>
-      <div *ngIf="roleForm.get('name').touched && roleForm.get('name').invalid" class="text-red text-xs">
-        <span>Role name is required</span>
+  <div class="dialog-body">
+    <form [formGroup]="roleForm" (ngSubmit)="onSubmitRole()" class="py-9 flex flex-col space-y-6">
+      <div class="flex flex-col space-y-2 w-full">
+        <label for="name" class="text-body_title leading-body_title text-web-text-secondary">Name</label>
+        <mat-form-field appearance="outline" class="example-full-width" [ngClass]="{
+              error: roleForm.get('name').invalid && roleForm.get('name').touched
+            }">
+          <input
+            appAlphabetOnly
+            id="name"
+            [minLength]="2"
+            [maxLength]="50"
+            type="text"
+            matInput
+            formControlName="name"
+            placeholder="Role Name"/>
+        </mat-form-field>
+        <div *ngIf="roleForm.get('name').touched && roleForm.get('name').invalid" class="text-red text-xs">
+          <span>Role name is required</span>
+        </div>
       </div>
-    </div>
-    <div class="flex flex-col space-y-2 w-full">
-      <label for="isActive" class="text-body_title leading-body_title text-web-text-secondary">Status</label>
-      <mat-form-field appearance="outline" class="example-full-width">
-        <mat-select id="isActive" formControlName="isActive">
-          <mat-option [value]="true">Active</mat-option>
-          <mat-option [value]="false">Inactive</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <button type="submit"
-            class="bg-primary text-white rounded-lg px-6 py-3 font-semibold text-base leading-base hover:bg-blue-hover focus:outline-none focus:ring-2 focus:ring-blue-focus focus:ring-opacity-50">
-      <span *ngIf="loading" class="material-icons animate-spin mr-2 text-base">refresh</span>
-      Add Role
-    </button>
-  </form>
+      <div class="flex flex-col space-y-2 w-full">
+        <label for="isActive" class="text-body_title leading-body_title text-web-text-secondary">Status</label>
+        <mat-form-field appearance="outline" class="example-full-width">
+          <mat-select id="isActive" formControlName="isActive">
+            <mat-option [value]="true">Active</mat-option>
+            <mat-option [value]="false">Inactive</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button type="submit"
+              class="bg-primary text-white rounded-lg px-6 py-3 font-semibold text-base leading-base hover:bg-blue-hover focus:outline-none focus:ring-2 focus:ring-blue-focus focus:ring-opacity-50">
+        <span *ngIf="loading" class="material-icons animate-spin mr-2 text-base">refresh</span>
+        Add Role
+      </button>
+    </form>
+  </div>
 </div>
