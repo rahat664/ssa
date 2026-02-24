@@ -1,1 +1,22 @@
-/* Reuse layout spacing similar to role-wise permission; relying on global utility classes */
+.user-summary__header {
+  gap: 0.35rem;
+}
+
+.user-summary__header-name,
+.user-summary__primary-name {
+  line-height: 1.55;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.user-summary__contact-info {
+  line-height: 1.6;
+}
+
+.user-summary__contact-field {
+  margin: 0;
+}
+
+.user-summary__contact-value {
+  word-break: break-word;
+}
