@@ -24,7 +24,7 @@ import {SharedService} from '../../../../shared/service/shared.service';
     NgIf
   ],
   templateUrl: './enterprise-detail.component.html',
-  styleUrl: './enterprise-detail.component.scss'
+  styleUrls: ['./enterprise-detail.component.scss']
 })
 export class EnterpriseDetailComponent {
   readonly dialog = inject(MatDialog)
