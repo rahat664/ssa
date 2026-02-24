@@ -1,0 +1,11 @@
+.enterprise-detail__name-row {
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.enterprise-detail__name {
+  line-height: 1.4;
+  max-width: min(60vw, 18rem);
+  word-break: normal;
+  overflow-wrap: break-word;
+}
